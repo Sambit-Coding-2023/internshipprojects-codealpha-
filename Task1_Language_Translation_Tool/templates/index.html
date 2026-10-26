@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LingoStudio AI - Next-generation multi-engine neural language translation studio with real-time speech dictation, text-to-speech synthesis, dictionary lookups, and 100+ global languages.">
+    <title>LingoStudio AI — Intelligent Neural Translation &amp; Speech Studio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet with Cache Busting -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ version }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+</head>
+<body>
+    <!-- Ambient Background Lighting Orbs -->
+    <div class="ambient-glow glow-1" aria-hidden="true"></div>
+    <div class="ambient-glow glow-2" aria-hidden="true"></div>
+
+    <div class="app-layout">
+        <!-- Application Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="brand-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>LingoStudio <span class="badge-ai">AI</span></h1>
+                    <p class="brand-sub">Neural Multi-Engine Translation &amp; Speech Studio</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="engine-selector-wrapper" title="Neural Translation Engine">
+                    <select class="engine-select" id="engineSelect" aria-label="Select Translation Engine">
+                        <option value="auto" selected>⚡ Auto Intelligent Routing</option>
+                        <option value="google">🌐 Google Neural Engine</option>
+                        <option value="mymemory">🧠 MyMemory Translation</option>
+                        <option value="libre">🛡️ LibreTranslate (Open)</option>
+                    </select>
+                </div>
+
+                <div class="status-dot" title="All Translation Systems Operational" aria-label="Systems Operational"></div>
+
+                <button type="button" class="nav-btn icon-only" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark/Light Theme (Ctrl+Shift+T)" aria-label="Toggle theme">
+                    <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <button type="button" class="nav-btn" id="historyToggleBtn" title="View Translation History" aria-label="Open History">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>History</span>
+                    <span class="counter-badge" id="historyBadge">0</span>
+                </button>
+
+                <button type="button" class="nav-btn" id="deckToggleBtn" onclick="openDeckModal()" title="Flashcard Vocabulary Study Deck" aria-label="Open Study Deck">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 1-4 4v14a3 3 0 0 0 3-3h7z"></path>
+                    </svg>
+                    <span>Deck</span>
+                    <span class="counter-badge" id="deckBadge">0</span>
+                </button>
+
+                <button type="button" class="nav-btn cmd-btn" id="cmdPaletteBtn" onclick="openCommandPalette()" title="Command Palette (Ctrl+K)" aria-label="Open Command Palette">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>Actions</span>
+                    <span class="cmd-kbd">Ctrl K</span>
+                </button>
+
+                <button type="button" class="nav-btn icon-only" id="shortcutsBtn" onclick="openShortcutsModal()" title="Keyboard Shortcuts" aria-label="Keyboard Shortcuts">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                        <line x1="6" y1="8" x2="6" y2="8"></line>
+                        <line x1="10" y1="8" x2="10" y2="8"></line>
+                        <line x1="14" y1="8" x2="14" y2="8"></line>
+                        <line x1="18" y1="8" x2="18" y2="8"></line>
+                        <line x1="6" y1="12" x2="6" y2="12"></line>
+                        <line x1="10" y1="12" x2="10" y2="12"></line>
+                        <line x1="14" y1="12" x2="14" y2="12"></line>
+                        <line x1="18" y1="12" x2="18" y2="12"></line>
+                        <line x1="7" y1="16" x2="17" y2="16"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Studio Mode Selector Navigation Bar -->
+        <nav class="studio-mode-bar" aria-label="Translation studio mode selection">
+            <div class="mode-pill-group">
+                <button type="button" class="mode-tab active" id="modeDualBtn" onclick="switchStudioMode('dual')">
+                    <span class="mode-icon">🔲</span>
+                    <span class="mode-title">Dual Studio</span>
+                </button>
+                <button type="button" class="mode-tab" id="modePolyglotBtn" onclick="switchStudioMode('polyglot')">
+                    <span class="mode-icon">🌐</span>
+                    <span class="mode-title">Polyglot Broadcast (1-to-5)</span>
+                </button>
+                <button type="button" class="mode-tab" id="modeConvoBtn" onclick="switchStudioMode('convo')">
+                    <span class="mode-icon">👥</span>
+                    <span class="mode-title">Conversation Walkie-Talkie</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Dual Studio Workspace Section -->
+        <div id="dualStudioSection">
+            <!-- Main Language Toolbar -->
+            <nav class="language-toolbar glass-panel" id="mainLangToolbar" aria-label="Language selection toolbar">
+            <!-- Source Language Selector -->
+            <div class="lang-selector-group" id="sourceGroup">
+                <div class="quick-chips" id="sourceChips">
+                    <button type="button" class="chip active" data-lang="auto">🌐 Detect</button>
+                    <button type="button" class="chip" data-lang="en">🇺🇸 EN</button>
+                    <button type="button" class="chip" data-lang="es">🇪🇸 ES</button>
+                    <button type="button" class="chip" data-lang="fr">🇫🇷 FR</button>
+                    <button type="button" class="chip" data-lang="de">🇩🇪 DE</button>
+                    <button type="button" class="chip" data-lang="hi">🇮🇳 HI</button>
+                </div>
+                <div class="dropdown-wrapper">
+                    <select class="lang-select" id="sourceLangSelect" aria-label="Source Language">
+                        {% for lang in all_langs %}
+                        <option value="{{ lang.code }}" {% if lang.code == 'auto' %}selected{% endif %}>
+                            {{ lang.flag }} {{ lang.name }} {% if lang.code != 'auto' %}({{ lang.native }}){% endif %}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- Language Swap Button -->
+            <div class="swap-action">
+                <button type="button" class="swap-btn" id="swapLangBtn" title="Swap languages (Ctrl+Shift+S)" aria-label="Swap source and target languages">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 16V4m0 0L3 8m4-4l4 4"></path>
+                        <path d="M17 8v12m0 0l4-4m-4 4l-4-4"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Target Language Selector -->
+            <div class="lang-selector-group" id="targetGroup">
+                <div class="quick-chips" id="targetChips">
+                    <button type="button" class="chip active" data-lang="es">🇪🇸 ES</button>
+                    <button type="button" class="chip" data-lang="en">🇺🇸 EN</button>
+                    <button type="button" class="chip" data-lang="fr">🇫🇷 FR</button>
+                    <button type="button" class="chip" data-lang="de">🇩🇪 DE</button>
+                    <button type="button" class="chip" data-lang="hi">🇮🇳 HI</button>
+                    <button type="button" class="chip" data-lang="ja">🇯🇵 JA</button>
+                </div>
+                <div class="dropdown-wrapper">
+                    <select class="lang-select" id="targetLangSelect" aria-label="Target Language">
+                        {% for lang in target_langs %}
+                        <option value="{{ lang.code }}" {% if lang.code == 'es' %}selected{% endif %}>
+                            {{ lang.flag }} {{ lang.name }} ({{ lang.native }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Studio Enhancement Bar: Tone Formality & Text Analytics -->
+        <div class="studio-sub-toolbar">
+            <div class="tone-selector-strip glass-panel">
+                <span class="tone-title"><span class="tone-icon">🎭</span> Tone:</span>
+                <div class="tone-chips" id="toneChips">
+                    <button type="button" class="tone-chip active" data-tone="default" title="Standard balanced translation">⚖️ Neutral</button>
+                    <button type="button" class="tone-chip" data-tone="formal" title="Formal & polite phrasing (Usted / Sie / Vous / Honorific)">👔 Formal</button>
+                    <button type="button" class="tone-chip" data-tone="casual" title="Casual & friendly conversational phrasing (Tú / Du / Tu)">☕ Casual</button>
+                    <button type="button" class="tone-chip" data-tone="academic" title="Academic & scholarly precise terminology">🎓 Academic</button>
+                    <button type="button" class="tone-chip" data-tone="simplified" title="Clear & simplified phrasing for language learners">💡 Simplified</button>
+                </div>
+            </div>
+
+            <div class="analytics-strip glass-panel" id="analyticsStrip">
+                <span class="analytics-pill" id="pillWords" title="Source word count">📝 <strong id="wordCountVal">0</strong> words</span>
+                <span class="analytics-pill" id="pillReadTime" title="Estimated reading time">⏱️ <strong id="readTimeVal">0s</strong> read</span>
+                <span class="analytics-pill" id="pillSpeakTime" title="Estimated speaking time">🗣️ <strong id="speakTimeVal">0s</strong> speak</span>
+                <span class="analytics-pill" id="pillCefr" title="Estimated CEFR difficulty level">🎯 <strong id="cefrVal">A1 (Beginner)</strong></span>
+            </div>
+        </div>
+
+        <!-- Dual Translation Studio Workspace -->
+        <main class="translation-grid">
+            <!-- Source Card -->
+            <section class="translation-card glass-panel" aria-label="Source text input panel">
+                <div class="card-header">
+                    <div class="card-meta">
+                        <span class="panel-label">Input Text</span>
+                        <span class="detected-badge" id="detectedBadge" style="display: none;">
+                            <span class="detected-pulse"></span>
+                            <span id="detectedLangText">Detected: English</span>
+                        </span>
+                    </div>
+                    <div class="card-header-tools">
+                        <div class="format-dropdown">
+                            <button type="button" class="tool-btn icon-only" id="formatMenuBtn" title="Formatting & Text Tools" aria-haspopup="true" aria-expanded="false" aria-label="Format text">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                                    <line x1="9" y1="20" x2="15" y2="20"></line>
+                                    <line x1="12" y1="4" x2="12" y2="20"></line>
+                                </svg>
+                            </button>
+                            <div class="format-menu" id="formatMenu" role="menu">
+                                <button type="button" class="format-item" onclick="formatSourceText('sentence')">Aa Sentence case</button>
+                                <button type="button" class="format-item" onclick="formatSourceText('title')">AA Title Case</button>
+                                <button type="button" class="format-item" onclick="formatSourceText('upper')">AB UPPERCASE</button>
+                                <button type="button" class="format-item" onclick="formatSourceText('lower')">ab lowercase</button>
+                                <button type="button" class="format-item" onclick="formatSourceText('clean')">🧹 Clean Extra Spaces</button>
+                                <button type="button" class="format-item" onclick="pasteFromClipboard()">📋 Paste from Clipboard</button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="tool-btn icon-only" id="clearInputBtn" title="Clear input text" aria-label="Clear text">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="textarea-container">
+                    <textarea 
+                        class="translation-textarea" 
+                        id="sourceTextInput" 
+                        placeholder="Type, paste text, upload documents, or click Dictate to speak..." 
+                        maxlength="5000"
+                        aria-label="Source text to translate"
+                        autofocus></textarea>
+                </div>
+
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <button type="button" class="tool-btn mic-btn" id="micBtn" title="Voice Dictation (Ctrl+Shift+D)" aria-label="Speech-to-text dictation">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                            <span id="micBtnText">Dictate</span>
+                            <span class="audio-equalizer" id="micEqualizer" style="display: none;" aria-hidden="true">
+                                <span></span><span></span><span></span><span></span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="tool-btn icon-only" id="sourceTtsBtn" title="Listen to Source Text" aria-label="Listen to source audio">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                            </svg>
+                            <span class="audio-equalizer mini" id="sourceEqualizer" style="display: none;" aria-hidden="true">
+                                <span></span><span></span><span></span>
+                            </span>
+                        </button>
+
+                        <div class="preset-dropdown">
+                            <button type="button" class="tool-btn" id="presetBtn" aria-haspopup="true" aria-expanded="false">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <span>Phrases ▾</span>
+                            </button>
+                            <div class="preset-menu" id="presetMenu" role="menu">
+                                <div class="preset-item" role="menuitem" data-phrase="Hello, nice to meet you. How are you doing today?">👋 Greeting: Nice to meet you</div>
+                                <div class="preset-item" role="menuitem" data-phrase="Could you please tell me how to get to the train station?">🚆 Travel: Directions to train station</div>
+                                <div class="preset-item" role="menuitem" data-phrase="We are excited to partner with your organization on this strategic initiative.">💼 Business: Strategic initiative partnership</div>
+                                <div class="preset-item" role="menuitem" data-phrase="Artificial intelligence neural networks learn complex patterns from multimodal data.">🤖 Tech: Neural network patterns</div>
+                                <div class="preset-item" role="menuitem" data-phrase="A journey of a thousand miles begins with a single step.">✨ Proverb: Thousand miles journey</div>
+                            </div>
+                        </div>
+
+                        <label class="tool-btn" title="Upload Document (.txt, .md, .csv, .json, .srt, .vtt)" style="cursor: pointer;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span>Upload</span>
+                            <input type="file" id="fileUploadInput" accept=".txt,.md,.json,.csv,.srt,.vtt" style="display:none;" aria-label="Upload document file">
+                        </label>
+                        <span class="sub-alert-badge" id="subAlertBadge" style="display:none;">🎬 Subtitle (.srt/.vtt)</span>
+                    </div>
+
+                    <div class="footer-right">
+                        <span class="char-count" id="sourceCharCount">0 / 5,000</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Target Output Card -->
+            <section class="translation-card glass-panel" aria-label="Translation output panel">
+                <div class="card-header">
+                    <div class="card-meta">
+                        <span class="panel-label">Translation</span>
+                        <span class="engine-badge" id="engineUsedBadge" style="display: none;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                            <span id="engineBadgeText">Google Neural</span>
+                        </span>
+                    </div>
+                    <div class="card-header-tools">
+                        <button type="button" class="tool-btn icon-only" id="fullscreenBtn" title="Fullscreen Presentation View" aria-label="Fullscreen view">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="textarea-container">
+                    <div class="translation-output" id="translationOutput" tabindex="0" role="region" aria-live="polite">
+                        <span class="placeholder-text">Translation will appear here in real-time...</span>
+                    </div>
+
+                    <!-- Phonetic Transliteration Reading -->
+                    <div class="transliteration-bar" id="translitBar" style="display: none;">
+                        <span class="translit-label">🗣️ Pronunciation:</span>
+                        <span class="translit-text" id="translitText"></span>
+                        <button type="button" class="mini-copy-btn" onclick="copyTransliteration()" title="Copy Pronunciation">Copy</button>
+                    </div>
+
+                    <!-- Quality Verification & Semantic Integrity Card -->
+                    <div class="verification-card" id="verificationCard" style="display: none;">
+                        <div class="verify-header">
+                            <span class="verify-score-badge" id="verifyScoreBadge">🛡️ 95% Meaning Integrity</span>
+                            <span class="verify-rating-text" id="verifyRatingText">Excellent Fidelity</span>
+                            <button type="button" class="close-verify-btn" onclick="closeVerificationCard()" aria-label="Close verification">×</button>
+                        </div>
+                        <div class="verify-details">
+                            <span class="verify-sub-title">Round-Trip Back-Translation:</span>
+                            <div class="verify-back-text" id="verifyBackText"></div>
+                        </div>
+                    </div>
+
+                    <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+                        <div class="typing-wave">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <button type="button" class="tool-btn" id="targetTtsBtn" title="Listen to Translation (Ctrl+Shift+L)" aria-label="Listen to translated speech">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                            </svg>
+                            <span id="targetTtsBtnText">Listen</span>
+                            <span class="audio-equalizer mini" id="targetEqualizer" style="display: none;" aria-hidden="true">
+                                <span></span><span></span><span></span>
+                            </span>
+                        </button>
+
+                        <button type="button" class="tool-btn" id="copyBtn" title="Copy Translation (Ctrl+Shift+C)" aria-label="Copy translated text">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <span id="copyBtnText">Copy</span>
+                        </button>
+
+                        <button type="button" class="tool-btn" id="verifyAccuracyBtn" onclick="verifyAccuracy()" title="Verify semantic integrity via round-trip back-translation">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span id="verifyBtnText">Verify</span>
+                        </button>
+
+                        <button type="button" class="tool-btn" id="addDeckBtn" onclick="addCurrentToDeck()" title="Save word or phrase to Flashcard Vocabulary Deck">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span>+ Deck</span>
+                        </button>
+
+                        <button type="button" class="tool-btn" id="bookmarkBtn" title="Save to History" aria-label="Save translation to history">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            </svg>
+                            <span>Save</span>
+                        </button>
+
+                        <button type="button" class="tool-btn" id="shareLinkBtn" onclick="shareCurrentTranslation()" title="Share direct translation link (copies URL)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                            <span>Share</span>
+                        </button>
+
+                        <div class="export-dropdown">
+                            <button type="button" class="tool-btn" id="exportBtn" aria-haspopup="true" aria-expanded="false">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Export ▾</span>
+                            </button>
+                            <div class="export-menu" id="exportMenu" role="menu">
+                                <div class="preset-item" role="menuitem" id="exportTxtBtn">📄 Download as Text (.txt)</div>
+                                <div class="preset-item" role="menuitem" id="exportJsonBtn">📋 Download as JSON (.json)</div>
+                                <div class="preset-item" role="menuitem" id="exportMp3Btn">🎵 Download Audio Speech (.mp3)</div>
+                                <div class="preset-item" role="menuitem" id="exportSrtBtn" style="display: none;">🎬 Download Subtitle (.srt)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="footer-right">
+                        <span class="engine-tag" id="translationLatencyTag">Ready</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Central Action Strip -->
+        <section class="action-strip" aria-label="Execution controls">
+            <button type="button" class="primary-translate-btn" id="manualTranslateBtn" onclick="performTranslation(true)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                <span>Translate Now</span>
+                <span class="kbd-hint">Ctrl + Enter</span>
+            </button>
+
+            <div class="toggle-control">
+                <span class="toggle-label" id="realtimeToggleLabel">Real-Time Debounced Translation</span>
+                <label class="switch" aria-labelledby="realtimeToggleLabel">
+                    <input type="checkbox" id="realtimeToggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="code-protect-wrapper">
+                <label class="code-protect-label" title="Preserves code blocks and markdown syntax from translation">
+                    <input type="checkbox" id="protectCodeToggle">
+                    <span>🛡️ Preserve Code &amp; Markdown</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- Dictionary Definition & Synonyms Card -->
+        <section class="dictionary-card glass-panel" id="dictionaryCard" style="display: none;" aria-label="Dictionary definitions and synonyms">
+            <div class="dict-header">
+                <div class="dict-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    <span id="dictWord">word</span>
+                    <span class="dict-phonetic" id="dictPhonetic"></span>
+                </div>
+                <button type="button" class="close-dict-btn" id="closeDictBtn" title="Close dictionary" aria-label="Close dictionary">×</button>
+            </div>
+            <div class="dict-content" id="dictContent">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+        </div><!-- end #dualStudioSection -->
+
+        <!-- Polyglot Multi-Translate Studio Section -->
+        <section id="polyglotSection" class="polyglot-section" style="display: none;" aria-label="Polyglot Broadcast Studio">
+            <div class="polyglot-source-card glass-panel">
+                <div class="card-header">
+                    <div class="card-meta">
+                        <span class="panel-label">Broadcast Source Text</span>
+                        <span class="badge-ai">1-to-5 Concurrency</span>
+                    </div>
+                    <button type="button" class="tool-btn icon-only" onclick="clearPolyglotInput()" title="Clear text" aria-label="Clear text">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="textarea-container">
+                    <textarea class="translation-textarea" id="polyglotInput" placeholder="Type or paste text to broadcast live across 5 languages simultaneously..." maxlength="3000"></textarea>
+                </div>
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <button type="button" class="primary-translate-btn" id="polyglotTranslateBtn" onclick="performPolyglotTranslation()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            <span>Broadcast Translation</span>
+                        </button>
+                    </div>
+                    <div class="footer-right">
+                        <span class="polyglot-status-tag" id="polyglotStatusTag">Ready to broadcast to 5 languages</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Polyglot Grid of 5 Languages -->
+            <div class="polyglot-grid" id="polyglotGrid">
+                <!-- Spanish -->
+                <div class="polyglot-card glass-panel" data-target="es">
+                    <div class="poly-card-header">
+                        <span class="poly-lang-badge">🇪🇸 Spanish</span>
+                        <div class="poly-card-tools">
+                            <button type="button" class="tool-btn icon-only" onclick="listenPolyglot('es')" title="Listen audio" aria-label="Listen Spanish">🔊</button>
+                            <button type="button" class="tool-btn icon-only" onclick="copyPolyglot('es')" title="Copy text" aria-label="Copy Spanish">📋</button>
+                        </div>
+                    </div>
+                    <div class="poly-output" id="polyOutput_es">Translation will appear here...</div>
+                </div>
+
+                <!-- French -->
+                <div class="polyglot-card glass-panel" data-target="fr">
+                    <div class="poly-card-header">
+                        <span class="poly-lang-badge">🇫🇷 French</span>
+                        <div class="poly-card-tools">
+                            <button type="button" class="tool-btn icon-only" onclick="listenPolyglot('fr')" title="Listen audio" aria-label="Listen French">🔊</button>
+                            <button type="button" class="tool-btn icon-only" onclick="copyPolyglot('fr')" title="Copy text" aria-label="Copy French">📋</button>
+                        </div>
+                    </div>
+                    <div class="poly-output" id="polyOutput_fr">Translation will appear here...</div>
+                </div>
+
+                <!-- German -->
+                <div class="polyglot-card glass-panel" data-target="de">
+                    <div class="poly-card-header">
+                        <span class="poly-lang-badge">🇩🇪 German</span>
+                        <div class="poly-card-tools">
+                            <button type="button" class="tool-btn icon-only" onclick="listenPolyglot('de')" title="Listen audio" aria-label="Listen German">🔊</button>
+                            <button type="button" class="tool-btn icon-only" onclick="copyPolyglot('de')" title="Copy text" aria-label="Copy German">📋</button>
+                        </div>
+                    </div>
+                    <div class="poly-output" id="polyOutput_de">Translation will appear here...</div>
+                </div>
+
+                <!-- Japanese -->
+                <div class="polyglot-card glass-panel" data-target="ja">
+                    <div class="poly-card-header">
+                        <span class="poly-lang-badge">🇯🇵 Japanese</span>
+                        <div class="poly-card-tools">
+                            <button type="button" class="tool-btn icon-only" onclick="listenPolyglot('ja')" title="Listen audio" aria-label="Listen Japanese">🔊</button>
+                            <button type="button" class="tool-btn icon-only" onclick="copyPolyglot('ja')" title="Copy text" aria-label="Copy Japanese">📋</button>
+                        </div>
+                    </div>
+                    <div class="poly-output" id="polyOutput_ja">Translation will appear here...</div>
+                </div>
+
+                <!-- Hindi -->
+                <div class="polyglot-card glass-panel" data-target="hi">
+                    <div class="poly-card-header">
+                        <span class="poly-lang-badge">🇮🇳 Hindi</span>
+                        <div class="poly-card-tools">
+                            <button type="button" class="tool-btn icon-only" onclick="listenPolyglot('hi')" title="Listen audio" aria-label="Listen Hindi">🔊</button>
+                            <button type="button" class="tool-btn icon-only" onclick="copyPolyglot('hi')" title="Copy text" aria-label="Copy Hindi">📋</button>
+                        </div>
+                    </div>
+                    <div class="poly-output" id="polyOutput_hi">Translation will appear here...</div>
+                    <div class="poly-translit" id="polyTranslit_hi" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Walkie-Talkie Conversation Section -->
+        <section id="convoSection" class="convo-section" style="display: none;" aria-label="Conversation Walkie-Talkie">
+            <div class="convo-control-bar glass-panel">
+                <div class="convo-lang-picker">
+                    <span class="speaker-pill speaker-a">Person A:</span>
+                    <select class="lang-select inline" id="convoLangA">
+                        {% for lang in target_langs %}
+                        <option value="{{ lang.code }}" {% if lang.code == 'en' %}selected{% endif %}>{{ lang.flag }} {{ lang.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="convo-swap-indicator">⇄</div>
+                <div class="convo-lang-picker">
+                    <span class="speaker-pill speaker-b">Person B:</span>
+                    <select class="lang-select inline" id="convoLangB">
+                        {% for lang in target_langs %}
+                        <option value="{{ lang.code }}" {% if lang.code == 'es' %}selected{% endif %}>{{ lang.flag }} {{ lang.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="button" class="tool-btn" onclick="clearConvoChat()">Clear Chat</button>
+            </div>
+
+            <div class="convo-chat-stream glass-panel" id="convoChatStream">
+                <div class="convo-welcome">
+                    <div class="welcome-icon">🎙️</div>
+                    <h3>Two-Way Voice Walkie-Talkie</h3>
+                    <p>Click Person A or Person B's microphone below to speak. Speech is instantly recognized, translated, and read aloud to the other speaker in real-time!</p>
+                </div>
+            </div>
+
+            <!-- Two Push-to-Talk Mic Docks -->
+            <div class="convo-mic-dock">
+                <button type="button" class="convo-mic-btn speaker-a-btn" id="convoMicBtnA" onclick="startConvoSpeech('A')">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                    <span id="convoMicTextA">Person A Speak (EN)</span>
+                </button>
+
+                <button type="button" class="convo-mic-btn speaker-b-btn" id="convoMicBtnB" onclick="startConvoSpeech('B')">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+                    <span id="convoMicTextB">Person B Speak (ES)</span>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- History Backdrop -->
+    <div class="drawer-backdrop" id="historyDrawerBackdrop" aria-hidden="true"></div>
+
+    <!-- History Offcanvas Drawer -->
+    <aside class="side-drawer" id="historyDrawer" aria-label="Translation History Drawer" aria-hidden="true">
+        <div class="drawer-header">
+            <div class="drawer-title">
+                <div class="drawer-title-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h2>Translation History</h2>
+                    <span class="drawer-subtitle" id="historySubtitle">0 translations recorded</span>
+                </div>
+            </div>
+            <div class="drawer-actions">
+                <button type="button" class="tool-btn" id="exportHistoryBtn" title="Export History as CSV">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span>Export</span>
+                </button>
+                <button type="button" class="tool-btn danger-hover" id="clearHistoryBtn" title="Clear All History">Clear</button>
+                <button type="button" class="tool-btn icon-only close-drawer-btn" id="closeDrawerBtn" aria-label="Close history drawer">&times;</button>
+            </div>
+        </div>
+
+        <div class="drawer-filter-bar">
+            <div class="history-search-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="historySearchInput" class="history-search-input" placeholder="Search history by text or language..." autocomplete="off" spellcheck="false" />
+                <button type="button" class="history-search-clear" id="historySearchClear" style="display:none;" title="Clear search">&times;</button>
+            </div>
+            <div class="history-filter-chips" id="historyFilterChips">
+                <button type="button" class="history-chip active" data-filter="all">All</button>
+                <button type="button" class="history-chip" data-filter="starred">⭐ Starred</button>
+            </div>
+        </div>
+
+        <div class="drawer-body" id="historyList">
+            <div class="empty-state">No translation history yet. Your translations will be automatically recorded here.</div>
+        </div>
+    </aside>
+
+    <!-- Keyboard Shortcuts Modal -->
+    <div class="modal-backdrop" id="shortcutsModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+        <div class="modal-card glass-panel">
+            <div class="modal-header">
+                <h3 id="modalTitle">Keyboard Shortcuts</h3>
+                <button type="button" class="close-modal-btn" id="closeShortcutsModal" onclick="closeShortcutsModal()" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcut-row">
+                    <span>Translate immediately</span>
+                    <kbd>Ctrl + Enter</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Swap languages</span>
+                    <kbd>Ctrl + Shift + S</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Copy translation</span>
+                    <kbd>Ctrl + Shift + C</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Toggle Voice Dictation</span>
+                    <kbd>Ctrl + Shift + D</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Listen to translation</span>
+                    <kbd>Ctrl + Shift + L</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Command Palette</span>
+                    <kbd>Ctrl + K</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Toggle Translation History</span>
+                    <kbd>Ctrl + Shift + H</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Flashcard Study Deck</span>
+                    <kbd>Ctrl + Shift + F</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Toggle Theme</span>
+                    <kbd>Ctrl + Shift + T</kbd>
+                </div>
+                <div class="shortcut-row">
+                    <span>Close Drawers &amp; Modals</span>
+                    <kbd>Esc</kbd>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flashcard Study Deck Modal -->
+    <div class="modal-backdrop" id="studyDeckModal" aria-hidden="true" role="dialog" aria-labelledby="deckModalTitle">
+        <div class="modal-card deck-modal-card glass-panel">
+            <div class="modal-header">
+                <div class="deck-title-group">
+                    <h3 id="deckModalTitle">Flashcard Vocabulary Deck</h3>
+                    <span class="counter-badge" id="deckCountBadge">0 cards</span>
+                </div>
+                <button type="button" class="close-modal-btn" onclick="closeDeckModal()" aria-label="Close modal">×</button>
+            </div>
+            <div class="modal-body deck-body">
+                <div id="deckEmptyState" class="empty-state">
+                    No flashcards saved yet. Click <strong>+ Deck</strong> on any translation to add vocabulary cards here!
+                </div>
+                <div id="deckCardViewer" class="flashcard-scene" style="display:none;">
+                    <div class="flashcard-card" id="activeFlashcard" onclick="flipFlashcard()">
+                        <!-- Front Face -->
+                        <div class="card-face card-front">
+                            <div class="face-header">
+                                <span class="lang-tag" id="cardFrontLang">ORIGINAL</span>
+                                <span class="flip-hint">Click to flip ↺</span>
+                            </div>
+                            <div class="face-content">
+                                <p id="cardFrontText">Hello</p>
+                            </div>
+                            <div class="face-footer">
+                                <button type="button" class="mini-tool-btn" onclick="event.stopPropagation(); listenDeckCard('front')">🔊 Audio</button>
+                            </div>
+                        </div>
+
+                        <!-- Back Face -->
+                        <div class="card-face card-back">
+                            <div class="face-header">
+                                <span class="lang-tag" id="cardBackLang">TRANSLATION</span>
+                                <span class="flip-hint">Click to flip ↺</span>
+                            </div>
+                            <div class="face-content">
+                                <p id="cardBackText">Hola</p>
+                                <p class="card-translit-text" id="cardTranslitText"></p>
+                            </div>
+                            <div class="face-footer">
+                                <button type="button" class="mini-tool-btn" onclick="event.stopPropagation(); listenDeckCard('back')">🔊 Audio</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard Navigation Controls -->
+                    <div class="deck-nav-bar">
+                        <button type="button" class="tool-btn" id="prevCardBtn" onclick="prevDeckCard()">⬅️ Previous</button>
+                        <span class="deck-position-indicator" id="deckPositionIndicator">1 / 1</span>
+                        <button type="button" class="tool-btn" id="nextCardBtn" onclick="nextDeckCard()">Next ➡️</button>
+                    </div>
+
+                    <div class="deck-actions-strip">
+                        <button type="button" class="tool-btn danger" onclick="deleteCurrentDeckCard()">🗑️ Remove Card</button>
+                        <button type="button" class="tool-btn" onclick="exportDeckCsv()">📥 Export to Anki (.csv)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Linear/Raycast Command Palette Modal -->
+    <div class="cmd-palette-backdrop" id="cmdPaletteModal" style="display: none;" aria-hidden="true" onclick="if(event.target === this) closeCommandPalette()">
+        <div class="cmd-palette-dialog glass-panel" role="dialog" aria-modal="true" aria-label="Command Palette">
+            <div class="cmd-input-wrapper">
+                <svg class="cmd-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="cmdInput" placeholder="Type a command or language... (e.g. Spanish, Dictate, Polyglot, Tone)" autocomplete="off" />
+                <kbd class="cmd-esc-hint" onclick="closeCommandPalette()">Esc</kbd>
+            </div>
+            <div class="cmd-results" id="cmdResults" role="listbox">
+                <!-- Dynamic command items generated by app.js -->
+            </div>
+            <div class="cmd-footer">
+                <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> select</span>
+                <span><kbd>esc</kbd> close</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fullscreen Presentation View -->
+    <div class="fullscreen-view" id="fullscreenView" aria-hidden="true">
+        <button type="button" class="close-fullscreen-btn" id="closeFullscreenBtn" title="Close Fullscreen (Esc)" aria-label="Close fullscreen view">×</button>
+        <div class="fs-content">
+            <div class="fs-source" id="fsSourceText"></div>
+            <div class="fs-divider" aria-hidden="true">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+            </div>
+            <div class="fs-target" id="fsTargetText"></div>
+        </div>
+    </div>
+
+    <!-- Floating Toast Notification Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- Application Script with Cache Busting -->
+    <script src="{{ url_for('static', filename='js/app.js') }}?v={{ version }}"></script>
+</body>
+</html>

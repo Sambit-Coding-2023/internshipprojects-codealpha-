@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Music Composer Studio | Task 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="studio-layout">
+        <!-- Top Navigation Bar -->
+        <header class="studio-header">
+            <div class="header-left">
+                <a href="http://localhost:5000" class="back-link">&larr; Portfolio Hub</a>
+                <div class="header-divider"></div>
+                <div class="brand-title">
+                    <div class="brand-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1>AI Music Composer Studio</h1>
+                        <p class="subtitle">Deep Learning Symbolic Music Synthesis using Stacked LSTM & music21</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-badges">
+                <span class="badge badge-purple">PyTorch LSTM (2 Layers)</span>
+                <span class="badge badge-blue">music21 MIDI Engine</span>
+                <span class="badge badge-green">Vocab: {{ vocab_size }} Tokens</span>
+            </div>
+        </header>
+
+        <!-- Main Studio Area -->
+        <main class="studio-main">
+            <!-- Sidebar Controls -->
+            <aside class="controls-panel">
+                <h2 class="panel-heading">COMPOSITION PARAMETERS</h2>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <label for="tempSlider">Temperature (Creativity)</label>
+                        <span class="value-badge" id="tempVal">0.80</span>
+                    </div>
+                    <input type="range" id="tempSlider" min="0.2" max="1.5" step="0.05" value="0.8">
+                    <div class="range-subtext">
+                        <span>0.2 (Structured)</span>
+                        <span>0.8 (Balanced)</span>
+                        <span>1.5 (Experimental)</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <label for="lengthSlider">Sequence Length (Notes)</label>
+                        <span class="value-badge" id="lengthVal">48</span>
+                    </div>
+                    <input type="range" id="lengthSlider" min="16" max="96" step="8" value="48">
+                    <div class="range-subtext">
+                        <span>16 Short</span>
+                        <span>48 Standard</span>
+                        <span>96 Extended</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <label for="tempoSlider">Playback Tempo</label>
+                        <span class="value-badge" id="tempoVal">110 BPM</span>
+                    </div>
+                    <input type="range" id="tempoSlider" min="70" max="160" step="5" value="110">
+                    <div class="range-subtext">
+                        <span>70 Andante</span>
+                        <span>110 Moderato</span>
+                        <span>160 Allegro</span>
+                    </div>
+                <div class="control-group">
+                    <label style="display:block; margin-bottom:8px; font-size:0.8rem; font-weight:600; color:var(--text-secondary);">STYLE PRESETS</label>
+                    <div class="presets-grid">
+                        <button type="button" class="preset-btn" onclick="applyPreset(0.5, 40, 100)">Classical Motif</button>
+                        <button type="button" class="preset-btn" onclick="applyPreset(0.75, 48, 85)">Chill Lo-Fi</button>
+                        <button type="button" class="preset-btn" onclick="applyPreset(0.9, 64, 130)">Allegro Arp</button>
+                        <button type="button" class="preset-btn" onclick="applyPreset(1.25, 56, 115)">Jazz Motif</button>
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generateBtn" onclick="generateMusic()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>Generate New Melody</span>
+                </button>
+
+                <div class="info-card">
+                    <h3>How it works:</h3>
+                    <p>The stacked LSTM neural network processes note pitch classes and chord intervals as discrete tokens. Using autoregressive sampling with temperature scaling, it predicts the next harmonious step in the melody.</p>
+                </div>
+            </aside>
+
+            <!-- Main Visualizer & Player -->
+            <section class="visualizer-panel">
+                <!-- Transport Toolbar -->
+                <div class="transport-bar">
+                    <div class="transport-controls">
+                        <button class="transport-btn" id="playBtn" onclick="playMusic()" disabled title="Play composition">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                        </button>
+                        <button class="transport-btn" id="pauseBtn" onclick="pauseMusic()" disabled title="Pause playback">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="6" y="4" width="4" height="16"></rect>
+                                <rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
+                        </button>
+                        <button class="transport-btn" id="stopBtn" onclick="stopMusic()" disabled title="Stop playback">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="6" y="6" width="12" height="12"></rect>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="time-display">
+                        <span id="timeCounter">00:00</span> / <span id="totalDuration">00:00</span>
+                    </div>
+
+                    <div class="current-note-display">
+                        Active Note: <strong id="activeNoteLabel">--</strong>
+                    </div>
+
+                    <div class="export-actions">
+                        <a id="downloadMidiBtn" href="#" class="download-btn disabled" download title="Download MIDI File">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Download MIDI (.mid)</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Piano Roll Canvas -->
+                <div class="piano-roll-container">
+                    <div class="canvas-header">
+                        <span class="roll-title">INTERACTIVE PIANO ROLL VISUALIZER</span>
+                        <span class="roll-status" id="canvasStatus">Click 'Generate New Melody' to compose</span>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="pianoRollCanvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Generated Note Stream -->
+                <div class="note-stream-container">
+                    <div class="stream-title">PREDICTED NOTE SEQUENCE:</div>
+                    <div class="note-chips" id="noteChips">
+                        <span class="empty-hint">Notes will appear here upon generation...</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

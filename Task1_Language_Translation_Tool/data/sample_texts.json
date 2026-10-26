@@ -1,0 +1,52 @@
+{
+  "benchmark_corpus": [
+    {
+      "source": "Hello, how are you today?",
+      "source_lang": "en",
+      "target_lang": "es",
+      "expected_keywords": ["hola", "cómo", "estás"]
+    },
+    {
+      "source": "Welcome to our intelligent AI language translation platform.",
+      "source_lang": "en",
+      "target_lang": "fr",
+      "expected_keywords": ["bienvenue", "traduction", "langue", "plateforme"]
+    },
+    {
+      "source": "Machine learning and artificial intelligence are transforming modern society.",
+      "source_lang": "en",
+      "target_lang": "de",
+      "expected_keywords": ["künstliche intelligenz", "maschinelles lernen", "gesellschaft"]
+    },
+    {
+      "source": "Could you please tell me the way to the nearest train station?",
+      "source_lang": "en",
+      "target_lang": "ja",
+      "expected_keywords": ["駅", "道", "教え"]
+    },
+    {
+      "source": "Practice makes perfect, and knowledge is the greatest treasure.",
+      "source_lang": "en",
+      "target_lang": "hi",
+      "expected_keywords": ["ज्ञान", "अभ्यास"]
+    },
+    {
+      "source": "Thank you very much for your kind support and cooperation.",
+      "source_lang": "en",
+      "target_lang": "zh",
+      "expected_keywords": ["谢谢", "合作", "支持"]
+    },
+    {
+      "source": "The weather today is sunny, pleasant, and warm.",
+      "source_lang": "en",
+      "target_lang": "it",
+      "expected_keywords": ["tempo", "soleggiato", "caldo", "piacevole"]
+    },
+    {
+      "source": "We are excited to announce our new open source software project.",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "expected_keywords": ["проект", "программного", "рады"]
+    }
+  ]
+}

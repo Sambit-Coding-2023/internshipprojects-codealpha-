@@ -1,0 +1,198 @@
+[
+  {
+    "id": 1,
+    "category": "Orders",
+    "question": "How do I track my order status?",
+    "patterns": [
+      "Track my order",
+      "Where is my package?",
+      "How to check order delivery status?",
+      "Can I trace my shipment?",
+      "Order tracking number",
+      "Check shipment progress",
+      "I need to trace my delivery",
+      "Where is my order right now?"
+    ],
+    "answer": "You can track your order in real-time by going to the 'My Orders' section in your account dashboard and clicking 'Track Order'. We also send an email and SMS with a live tracking link once your order ships.",
+    "tags": ["order", "track", "tracking", "package", "shipment", "delivery", "trace"]
+  },
+  {
+    "id": 2,
+    "category": "Orders",
+    "question": "Can I cancel or modify my order after placing it?",
+    "patterns": [
+      "Cancel my order",
+      "Can I change items in my order?",
+      "I want to cancel the purchase",
+      "Change shipping address after ordering",
+      "Stop my order before dispatch",
+      "Can I cancel my recent purchase?",
+      "I want to change the delivery address of my order"
+    ],
+    "answer": "Orders can be modified or canceled within 60 minutes of placement. Visit 'My Orders' > 'Order Details' > 'Cancel Order' or update delivery address. If the order has already been processed or dispatched, you can initiate a return once delivered.",
+    "tags": ["cancel", "modify", "change", "address", "stop", "order", "purchase"]
+  },
+  {
+    "id": 3,
+    "category": "Shipping",
+    "question": "What are your delivery options and shipping times?",
+    "patterns": [
+      "Shipping time",
+      "How long does delivery take?",
+      "Do you offer express shipping?",
+      "When will my order arrive?",
+      "Standard delivery vs express delivery",
+      "How many days will shipping take?",
+      "Do you deliver within 2 days?",
+      "Expected delivery timeframe"
+    ],
+    "answer": "Standard shipping typically takes 3 to 5 business days. Express delivery arrives within 1 to 2 business days. Free standard shipping is automatically applied on orders over $50.",
+    "tags": ["shipping", "delivery", "time", "speed", "express", "days", "transit", "arrive"]
+  },
+  {
+    "id": 4,
+    "category": "Shipping",
+    "question": "Do you ship internationally?",
+    "patterns": [
+      "International shipping",
+      "Do you deliver outside the United States?",
+      "Worldwide delivery",
+      "Can I order from other countries?",
+      "Global shipping options",
+      "Can you deliver to Europe or Japan?",
+      "Do you ship abroad?",
+      "Overseas shipping"
+    ],
+    "answer": "Yes, we ship to over 60 countries worldwide including Canada, Europe, Asia, and Australia. International shipping typically takes 7 to 14 business days depending on customs clearance.",
+    "tags": ["international", "worldwide", "global", "foreign", "countries", "customs", "abroad", "overseas"]
+  },
+  {
+    "id": 5,
+    "category": "Returns & Refunds",
+    "question": "What is your return and refund policy?",
+    "patterns": [
+      "Return policy",
+      "How do I return an item?",
+      "Can I get a refund?",
+      "How many days do I have to return a product?",
+      "Refund process",
+      "What is your refund and return policy?",
+      "Can I send back an unused shirt?",
+      "How do I return items?"
+    ],
+    "answer": "We offer a 30-day hassle-free return policy from the date of delivery. Items must be unused, in original packaging, and include all tags. Once we receive your return, refunds are issued within 3-5 business days to your original payment method.",
+    "tags": ["return", "refund", "policy", "send back", "money back", "exchange"]
+  },
+  {
+    "id": 6,
+    "category": "Returns & Refunds",
+    "question": "How long does it take to receive a refund?",
+    "patterns": [
+      "When will I get my refund?",
+      "Refund time frame",
+      "Money returned to bank",
+      "How long for refund to process?",
+      "Pending refund status",
+      "When will my money be returned to my card?",
+      "How long does a refund take?"
+    ],
+    "answer": "Once our warehouse inspects the returned item (usually within 48 hours of arrival), your refund will be processed immediately. Credit card refunds typically take 3-5 business days to reflect in your bank account.",
+    "tags": ["refund", "time", "bank", "credit card", "deposit", "money", "process"]
+  },
+  {
+    "id": 7,
+    "category": "Payments",
+    "question": "What payment methods do you accept?",
+    "patterns": [
+      "Payment options",
+      "How can I pay?",
+      "Do you take PayPal or Apple Pay?",
+      "Can I pay with credit card?",
+      "Accepted forms of payment",
+      "Can I pay using Apple Pay or PayPal?",
+      "Do you accept Visa cards?"
+    ],
+    "answer": "We accept major credit/debit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, Google Pay, and buy-now-pay-later services including Klarna and Afterpay.",
+    "tags": ["payment", "methods", "credit card", "paypal", "apple pay", "google pay", "klarna", "visa", "mastercard"]
+  },
+  {
+    "id": 8,
+    "category": "Payments",
+    "question": "Is my payment information secure?",
+    "patterns": [
+      "Is payment safe?",
+      "Security of credit card details",
+      "Are transactions encrypted?",
+      "Safe checkout process",
+      "PCI compliance",
+      "Is it safe to enter my credit card info?",
+      "Payment security and fraud protection"
+    ],
+    "answer": "Yes, all transactions are secured with 256-bit SSL encryption and processed through PCI-DSS Level 1 compliant payment gateways. We never store your full card details on our servers.",
+    "tags": ["secure", "safety", "safe", "encryption", "ssl", "pci", "card", "protection", "fraud"]
+  },
+  {
+    "id": 9,
+    "category": "Account",
+    "question": "How do I reset my password?",
+    "patterns": [
+      "Forgot password",
+      "Reset my password",
+      "Cannot login to my account",
+      "Change account password",
+      "Password recovery link",
+      "I forgot my password, how to reset?",
+      "Can't login to my account"
+    ],
+    "answer": "Click on the 'Sign In' button, select 'Forgot Password?', enter your registered email address, and we will send you a password reset link valid for 24 hours.",
+    "tags": ["password", "reset", "forgot", "account", "login", "recover"]
+  },
+  {
+    "id": 10,
+    "category": "Account",
+    "question": "How do I update my email address or personal details?",
+    "patterns": [
+      "Change email address",
+      "Update profile info",
+      "Edit account details",
+      "Change phone number",
+      "Manage account settings",
+      "How to change my profile email address?",
+      "Update phone number in settings"
+    ],
+    "answer": "Log in to your account and navigate to 'Account Settings' > 'Profile'. Here you can update your name, email address, phone number, and default shipping addresses.",
+    "tags": ["account", "email", "profile", "update", "details", "phone", "settings"]
+  },
+  {
+    "id": 11,
+    "category": "Customer Support",
+    "question": "How can I contact customer support?",
+    "patterns": [
+      "Contact support",
+      "Speak to a real person",
+      "Customer care phone number",
+      "Support email address",
+      "Help desk contact",
+      "I want to speak with a human customer support agent",
+      "What is your support email and phone number?"
+    ],
+    "answer": "Our customer support team is available 24/7! You can reach us via email at support@example.com, live chat on this website, or call our toll-free hotline at 1-800-555-0199 (Mon-Fri 9am-6pm EST).",
+    "tags": ["support", "contact", "human", "phone", "email", "help", "agent", "representative"]
+  },
+  {
+    "id": 12,
+    "category": "Promotions",
+    "question": "How do I apply a discount code or coupon?",
+    "patterns": [
+      "Use coupon code",
+      "Apply discount",
+      "Where to enter promo code?",
+      "Coupon not working",
+      "Voucher code application",
+      "Where can I enter my discount promo code?",
+      "Coupon is not applying at checkout"
+    ],
+    "answer": "During checkout, you will see a 'Promo Code / Gift Card' field on the payment summary page. Enter your code and click 'Apply' to see the discount deducted from your subtotal.",
+    "tags": ["coupon", "discount", "promo", "voucher", "code", "offer", "checkout"]
+  }
+]

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligent Vision & Multi-Object Tracking | Task 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation Bar -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <a href="http://localhost:5000" class="back-link">&larr; Portfolio Hub</a>
+                <div class="header-divider"></div>
+                <div class="brand-title">
+                    <div class="brand-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                            <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                            <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                            <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                            <line x1="2" y1="12" x2="6" y2="12"></line>
+                            <line x1="18" y1="12" x2="22" y2="12"></line>
+                            <line x1="12" y1="2" x2="12" y2="6"></line>
+                            <line x1="12" y1="18" x2="12" y2="22"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1>Intelligent Vision & Multi-Object Tracking Studio</h1>
+                        <p class="subtitle">YOLOv8 Deep Neural Detector + SORT Kalman Filtering + Line-Crossing Analytics</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Switchers in Header -->
+            <nav class="mode-tabs">
+                <button class="mode-tab active" id="tabLiveBtn" onclick="switchTab('live')">
+                    <span class="tab-dot"></span> Live Stream Operations
+                </button>
+                <button class="mode-tab" id="tabImageBtn" onclick="switchTab('image')">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    Image Inspector
+                </button>
+                <button class="mode-tab" id="tabEventsBtn" onclick="switchTab('events')">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    Incident Audit Log
+                </button>
+            </nav>
+
+            <div class="header-actions">
+                <button class="tool-btn" onclick="takeSnapshot()" title="Capture Annotated Frame Screenshot">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <span>Snapshot</span>
+                </button>
+
+                <a href="/api/export_events" class="tool-btn" title="Download CSV Event Telemetry">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>CSV Log</span>
+                </a>
+
+                <button class="tool-btn" id="audioToggleBtn" onclick="toggleAudioAlerts()" title="Toggle Web Audio Crossing Alerts">
+                    <span id="audioIcon">🔔</span>
+                    <span id="audioLabel">Alerts: ON</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="dashboard-main">
+            <!-- TAB 1: LIVE STREAM OPERATIONS -->
+            <div class="tab-content active" id="tabContentLive">
+                <div class="vision-workspace">
+                    <!-- Video Viewport Section -->
+                    <section class="video-container">
+                        <div class="viewport-header">
+                            <div class="stream-info">
+                                <span class="stream-badge"><span class="pulse-dot"></span> FEED</span>
+                                <span class="stream-title" id="streamTitle">SURVEILLANCE VIDEO (YOLOV8 + KALMAN)</span>
+                                <span class="res-tag" id="resTag">HD 768&times;432</span>
+                            </div>
+                            <div class="viewport-stats">
+                                <span class="hud-stat">FPS: <strong id="hudFps">--</strong></span>
+                                <span class="hud-stat">Active: <strong id="hudActive">0</strong></span>
+                                <span class="hud-stat highlight-green">IN: <strong id="hudIn">0</strong></span>
+                                <span class="hud-stat highlight-red">OUT: <strong id="hudOut">0</strong></span>
+                                <button class="icon-btn" onclick="toggleFullScreen()" title="Toggle Fullscreen">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="video-wrapper" id="videoWrapper">
+                            <img id="videoFeed" src="/video_feed" alt="Real-time Object Detection and Tracking Stream">
+                            <div class="cyber-corner top-left"></div>
+                            <div class="cyber-corner top-right"></div>
+                            <div class="cyber-corner bottom-left"></div>
+                            <div class="cyber-corner bottom-right"></div>
+                        </div>
+
+                        <div class="viewport-footer">
+                            <span>Detector: <strong>YOLOv8n (Single-Stage CSPDarknet + PANet)</strong></span>
+                            <span>State Vector: <strong>[u, v, s, r, &uacute;, &vacute;, &sacute;]ᵀ</strong></span>
+                            <span>Association: <strong>Hungarian Optimization (IoU Cost)</strong></span>
+                        </div>
+                    </section>
+
+                    <!-- Control & Telemetry Sidebar -->
+                    <aside class="sidebar-panel">
+                        <!-- Source Selection Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">VIDEO INPUT SOURCE</h2>
+                                <span class="badge badge-cyan" id="activeSourceBadge">Real Traffic</span>
+                            </div>
+
+                            <div class="btn-grid-sources">
+                                <button class="toggle-btn active" id="srcRealBtn" onclick="setSource('real_traffic')">
+                                    <span class="btn-icon">🚗</span>
+                                    <span>Real Traffic</span>
+                                </button>
+                                <button class="toggle-btn" id="srcSampleBtn" onclick="setSource('sample')">
+                                    <span class="btn-icon">🛣️</span>
+                                    <span>Synthetic Sim</span>
+                                </button>
+                                <button class="toggle-btn" id="srcWebcamBtn" onclick="setSource('webcam')">
+                                    <span class="btn-icon">📹</span>
+                                    <span>Live Webcam</span>
+                                </button>
+                                <button class="toggle-btn" id="srcUploadBtn" onclick="triggerVideoUpload()">
+                                    <span class="btn-icon">📁</span>
+                                    <span>Upload MP4</span>
+                                </button>
+                                <input type="file" id="videoFileInput" accept=".mp4,.avi,.mov,.mkv,.webm" style="display:none" onchange="uploadVideoFile(this)">
+                            </div>
+                        </div>
+
+                        <!-- Vision & Analytics Controls -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">ANALYTICS & VISION LAYERS</h2>
+                            </div>
+
+                            <!-- Target Class Category Presets -->
+                            <div class="control-field">
+                                <label>Target Class Filter</label>
+                                <div class="filter-pills" id="filterPills">
+                                    <button class="pill active" onclick="setClassFilter('all')">All COCO</button>
+                                    <button class="pill" onclick="setClassFilter('vehicles')">Vehicles</button>
+                                    <button class="pill" onclick="setClassFilter('people')">Pedestrians</button>
+                                    <button class="pill" onclick="setClassFilter('traffic')">Traffic Scene</button>
+                                    <button class="pill" onclick="setClassFilter('objects')">Common Items</button>
+                                </div>
+                            </div>
+
+                            <!-- Sliders -->
+                            <div class="control-field">
+                                <div class="label-row">
+                                    <label for="confSlider">Confidence Threshold</label>
+                                    <span class="val-pill" id="confVal">0.35</span>
+                                </div>
+                                <input type="range" id="confSlider" min="0.10" max="0.85" step="0.05" value="0.35" onchange="updateSettings()">
+                            </div>
+
+                            <div class="control-field">
+                                <div class="label-row">
+                                    <label for="tripwireSlider">Virtual Tripwire Y-Position</label>
+                                    <span class="val-pill" id="tripwireVal">52%</span>
+                                </div>
+                                <input type="range" id="tripwireSlider" min="0.20" max="0.85" step="0.02" value="0.52" onchange="updateTripwirePosition(this.value)">
+                            </div>
+
+                            <!-- Layer Toggles -->
+                            <div class="toggles-grid">
+                                <div class="switch-field">
+                                    <span>Bounding Boxes & IDs</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="boxesToggle" checked onchange="updateSettings()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="switch-field">
+                                    <span>Motion Trajectory Trails</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="trailsToggle" checked onchange="updateSettings()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="switch-field">
+                                    <span>Speed & Heading Vectors</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="speedToggle" checked onchange="updateSettings()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="switch-field">
+                                    <span>Virtual Tripwire Counting</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="tripwireToggle" checked onchange="updateSettings()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="switch-field">
+                                    <span>Surveillance Zone (ROI)</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="zoneToggle" checked onchange="updateSettings()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="switch-field">
+                                    <span>Motion Density Heatmap</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="heatmapToggle" onchange="updateSettings()">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="action-btn" onclick="resetTracker()">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                </svg>
+                                <span>Reset Tracking IDs & Tripwire</span>
+                            </button>
+                        </div>
+
+                        <!-- Telemetry Metrics Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">LIVE TELEMETRY & COUNTING</h2>
+                            </div>
+
+                            <div class="metrics-grid">
+                                <div class="metric-box">
+                                    <span class="metric-num text-emerald" id="statFps">0.0</span>
+                                    <span class="metric-label">STREAM FPS</span>
+                                </div>
+                                <div class="metric-box">
+                                    <span class="metric-num text-cyan" id="statActive">0</span>
+                                    <span class="metric-label">IN VIEW</span>
+                                </div>
+                                <div class="metric-box">
+                                    <span class="metric-num text-emerald" id="statIn">0</span>
+                                    <span class="metric-label">TRIPWIRE IN ▲</span>
+                                </div>
+                                <div class="metric-box">
+                                    <span class="metric-num text-rose" id="statOut">0</span>
+                                    <span class="metric-label">TRIPWIRE OUT ▼</span>
+                                </div>
+                                <div class="metric-box full-width">
+                                    <div class="metric-row">
+                                        <div>
+                                            <span class="metric-num text-purple" id="statTotal">0</span>
+                                            <span class="metric-label">CUMULATIVE UNIQUE TRACKS</span>
+                                        </div>
+                                        <div class="zone-pill-box">
+                                            <span class="zone-count-badge" id="statZone">0</span>
+                                            <span class="metric-label">IN ZONE</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Class Breakdown -->
+                            <div class="class-breakdown">
+                                <span class="sub-title">ACTIVE CLASS DISTRIBUTION:</span>
+                                <div class="class-chips" id="classChips">
+                                    <span class="empty-hint">Scanning frame...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mini Event Feed Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">LIVE INCIDENT & EVENT STREAM</h2>
+                                <button class="text-link" onclick="clearEvents()">Clear</button>
+                            </div>
+                            <div class="event-stream" id="eventStream">
+                                <div class="empty-event-hint">Awaiting line crossing and intrusion events...</div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <!-- TAB 2: STATIC IMAGE INSPECTOR -->
+            <div class="tab-content" id="tabContentImage">
+                <div class="image-inspector-container">
+                    <div class="inspector-header-card">
+                        <div class="inspector-controls">
+                            <h2>Deep Neural Image Object Inspector</h2>
+                            <p>Upload any high-resolution photo or load the sample street scene to run instant YOLOv8 object detection, bounding box extraction, and class analysis.</p>
+                            
+                            <div class="upload-actions">
+                                <button class="btn-primary" onclick="triggerImageUpload()">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                    Upload Image (JPG / PNG)
+                                </button>
+                                <button class="btn-secondary" onclick="loadSampleImage()">
+                                    Load Sample Street Scene
+                                </button>
+                                <input type="file" id="imageFileInput" accept=".jpg,.jpeg,.png,.webp" style="display:none" onchange="processUploadedImage(this)">
+                                
+                                <div class="conf-inline">
+                                    <label>Conf Threshold:</label>
+                                    <input type="range" id="imgConfSlider" min="0.1" max="0.9" step="0.05" value="0.35" onchange="document.getElementById('imgConfVal').textContent = this.value">
+                                    <span class="val-pill" id="imgConfVal">0.35</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Stats Banner -->
+                        <div class="image-summary-strip" id="imageSummaryStrip" style="display:none;">
+                            <div class="summary-pill">
+                                <span>Objects Detected</span>
+                                <strong id="imgTotalDets">0</strong>
+                            </div>
+                            <div class="summary-pill">
+                                <span>Inference Time</span>
+                                <strong id="imgInferenceTime">0 ms</strong>
+                            </div>
+                            <div class="summary-pill">
+                                <span>Dimensions</span>
+                                <strong id="imgDimensions">--</strong>
+                            </div>
+                            <button class="btn-secondary" id="downloadAnnotatedBtn" style="margin-left:auto;">
+                                📥 Download Result
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Side-by-Side or Image + Detections Table View -->
+                    <div class="inspector-results-grid">
+                        <div class="result-image-pane">
+                            <div class="pane-title">ANNOTATED DETECTION CANVAS</div>
+                            <div class="image-view-box" id="imageViewBox">
+                                <div class="upload-dropzone" onclick="triggerImageUpload()">
+                                    <div class="drop-icon">📷</div>
+                                    <h3>Drag & Drop or Click to Upload Image</h3>
+                                    <p>Supports PNG, JPG, JPEG, and WebP images</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result-data-pane">
+                            <div class="pane-title">DETECTIONS & BOUNDING BOX DATA</div>
+                            <div class="table-container">
+                                <table class="detections-table" id="detectionsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Class</th>
+                                            <th>Confidence</th>
+                                            <th>Coordinates [x1, y1, x2, y2]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detectionsTableBody">
+                                        <tr>
+                                            <td colspan="4" class="table-empty">No image analyzed yet. Upload an image above.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: INCIDENT AUDIT LOG -->
+            <div class="tab-content" id="tabContentEvents">
+                <div class="events-audit-container">
+                    <div class="audit-header">
+                        <div>
+                            <h2>Real-Time Surveillance Incident & Crossing Audit Log</h2>
+                            <p>Continuous audit trail of all virtual tripwire line-crossings and ROI surveillance zone intrusions.</p>
+                        </div>
+                        <div class="audit-actions">
+                            <a href="/api/export_events" class="btn-primary">
+                                📥 Export Full CSV
+                            </a>
+                            <button class="btn-secondary" onclick="clearEvents()">
+                                🗑️ Clear Event Log
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="audit-table-wrapper">
+                        <table class="audit-table" id="auditTable">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Track ID</th>
+                                    <th>Class Name</th>
+                                    <th>Event Type</th>
+                                    <th>Action / Direction</th>
+                                    <th>Speed (km/h)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditTableBody">
+                                <tr>
+                                    <td colspan="6" class="table-empty">No events logged yet. Objects crossing the tripwire or entering the zone will appear here.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyberpunk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA // Futuristic AI FAQ Assistant | Task 2</title>
+    <meta name="description" content="Next-Gen Futuristic FAQ Chatbot powered by NLTK Lemmatization, TF-IDF Vector Spaces, and Interactive Quantum Telemetry.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=3.3">
+</head>
+<body>
+    <!-- Background Quantum Neural Canvas & Cyber Grid -->
+    <canvas id="neuralCanvas" class="neural-canvas"></canvas>
+    <div class="cyber-scanlines" aria-hidden="true"></div>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <div class="app-layout">
+        <!-- Sidebar HUD -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <!-- Futuristic Holographic Chat Logo with Orbital Rings -->
+                <div class="logo-mark-futuristic" id="gyroCore" title="AURA Neural Core Matrix">
+                    <div class="gyro-ring ring-1"></div>
+                    <div class="gyro-ring ring-2"></div>
+                    <div class="logo-icon-wrap">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="core-title-wrap">
+                        <h1 class="sidebar-title">FAQ Assistant</h1>
+                        <span class="version-tag">AURA v3.0</span>
+                    </div>
+                    <div class="badge-status">
+                        <span class="status-pulse-dot"></span>
+                        <span class="status-text">NLP &amp; TF-IDF ACTIVE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Specs Tech Stack Chips -->
+            <div class="sidebar-section">
+                <div class="section-title">PROJECT SPECS</div>
+                <div class="tech-stack-chips">
+                    <span class="tech-chip">NLTK</span>
+                    <span class="tech-chip">TF-IDF</span>
+                    <span class="tech-chip">Cosine Similarity</span>
+                    <span class="tech-chip">Flask</span>
+                </div>
+            </div>
+
+            <!-- Real-time HUD Telemetry Block -->
+            <div class="sidebar-section telemetry-hud-section">
+                <div class="section-title">SYSTEM TELEMETRY</div>
+                <div class="telemetry-grid">
+                    <div class="telemetry-card">
+                        <span class="tele-label">TIME (UTC)</span>
+                        <span class="tele-val font-mono" id="cyberClock">00:00:00.0</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="tele-label">EST. LATENCY</span>
+                        <span class="tele-val font-mono text-neon-cyan" id="sidebarLatency">~2.5 ms</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="tele-label">VECTOR SPACE</span>
+                        <span class="tele-val font-mono text-neon-purple">TF-IDF 380D</span>
+                    </div>
+                    <div class="telemetry-card">
+                        <span class="tele-label">NLP PIPELINE</span>
+                        <span class="tele-val font-mono text-neon-green">NLTK Dual Lemma</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Topic & Intent Explorer -->
+            <div class="sidebar-section">
+                <div class="section-header-flex">
+                    <div class="section-title">TOPICS &amp; NEURAL PATTERNS</div>
+                    <span class="faq-counter-badge">{{ faqs | length }} FAQs</span>
+                </div>
+                <div class="topic-search-wrap">
+                    <input 
+                        type="text" 
+                        id="sidebarSearch" 
+                        class="sidebar-search-input" 
+                        placeholder="Filter knowledgebase..."
+                        oninput="filterSidebarTopics(this.value)"
+                    >
+                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+
+                <div class="category-list" id="categoryList">
+                    {% for cat in categories %}
+                    <div class="category-group" data-cat="{{ cat | lower }}">
+                        <div class="category-name">
+                            <span class="cat-prefix">◈</span> {{ cat }}
+                        </div>
+                        <div class="quick-questions">
+                            {% for f in faqs %}
+                                {% if f.category == cat %}
+                                <button type="button" class="quick-btn" data-query="{{ f.question | e }}" onclick="sendQuickQuery(this)">
+                                    <span class="btn-arrow">&rsaquo;</span>
+                                    <span class="btn-txt">{{ f.question }}</span>
+                                </button>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Footer Controls -->
+            <div class="sidebar-footer">
+                <a href="http://localhost:5000" class="portfolio-back-btn" title="Back to Portfolio Hub">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Portfolio Hub</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Futuristic Chat Deck -->
+        <main class="chat-main">
+            <!-- Sci-Fi HUD Header -->
+            <header class="chat-header">
+                <div class="bot-info">
+                    <div class="hud-avatar-wrap">
+                        <div class="avatar-ring"></div>
+                        <div class="bot-avatar font-orbitron">AI</div>
+                        <span class="avatar-live-indicator"></span>
+                    </div>
+                    <div>
+                        <div class="bot-name-row">
+                            <h2 class="bot-name font-orbitron">AURA // SUPPORT AI</h2>
+                            <span class="neural-badge font-mono">QUANTUM NLP MATRIX</span>
+                        </div>
+                        <p class="bot-subtitle">Real-time Semantic Intent Matching &bull; Vector Cosine Space &bull; Content Token Gating</p>
+                    </div>
+                </div>
+
+                <!-- HUD Header Action Controls -->
+                <div class="header-actions">
+                    <!-- Theme Selector -->
+                    <div class="theme-selector-wrap" title="Switch Cyber Theme">
+                        <button class="action-btn theme-btn" id="themeBtn" onclick="toggleThemeMenu()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            <span id="currentThemeLabel">Cyber Neon</span>
+                        </button>
+                        <div class="theme-menu" id="themeMenu">
+                            <button onclick="setTheme('cyberpunk')">◈ Cyber Neon (Cyan/Violet)</button>
+                            <button onclick="setTheme('matrix')">◈ Matrix Terminal (Green/Black)</button>
+                            <button onclick="setTheme('solar')">◈ Solar Plasma (Amber/Crimson)</button>
+                            <button onclick="setTheme('quantum')">◈ Quantum Void (Deep Sapphire)</button>
+                        </div>
+                    </div>
+
+                    <!-- Voice Synthesis (TTS) Toggle -->
+                    <button class="action-btn" id="ttsToggleBtn" onclick="toggleTTS()" title="Toggle Neural Voice Readout">
+                        <svg class="tts-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                        <span id="ttsBtnText">Voice: OFF</span>
+                    </button>
+
+                    <!-- Web Audio Procedural SFX Toggle -->
+                    <button class="action-btn" id="sfxToggleBtn" onclick="toggleSFX()" title="Toggle Cyber Audio FX">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        <span id="sfxBtnText">SFX: ON</span>
+                    </button>
+
+                    <!-- Export Cyber Session Transcript -->
+                    <button class="action-btn" onclick="exportSessionLog()" title="Export Cyber Security Audit Transcript">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Export</span>
+                    </button>
+
+                    <!-- Clear Chat -->
+                    <button class="action-btn clear-btn" onclick="clearChat()" title="Reset session buffer">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        <span>Clear</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Messages Stream Container -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Neural Initialization Message -->
+                <div class="message-row bot-row">
+                    <div class="msg-avatar font-orbitron">AI</div>
+                    <div class="msg-bubble">
+                        <div class="bubble-header-hud">
+                            <span class="hud-tag">NEURAL SYSTEM INITIALIZED</span>
+                            <span class="hud-status">READY &bull; ENCRYPTED</span>
+                        </div>
+                        <p class="welcome-text">Greetings! I am <strong>AURA</strong>, your futuristic AI Customer Support Assistant. My neural retrieval engine can assist you with real-time package tracking, 30-day returns, global transit policies, encryption protocols, and promotional access.</p>
+                        
+                        <div class="quick-suggestions-box">
+                            <span class="sugg-label font-mono">◈ QUICK TRANSMISSION SHORTCUTS:</span>
+                            <div class="sugg-pills">
+                                <button type="button" class="sugg-pill" data-query="Where is my package right now?" onclick="sendQuickQuery(this)">
+                                    <span class="pill-spark">⚡</span> Track Live Shipment
+                                </button>
+                                <button type="button" class="sugg-pill" data-query="What is your refund and return policy?" onclick="sendQuickQuery(this)">
+                                    <span class="pill-spark">◈</span> 30-Day Return Portal
+                                </button>
+                                <button type="button" class="sugg-pill" data-query="Can I pay using Apple Pay or PayPal?" onclick="sendQuickQuery(this)">
+                                    <span class="pill-spark">💳</span> Payment &amp; Wallets
+                                </button>
+                                <button type="button" class="sugg-pill" data-query="Are transactions encrypted and secure?" onclick="sendQuickQuery(this)">
+                                    <span class="pill-spark">🛡️</span> Security &amp; Encryption
+                                </button>
+                                <button type="button" class="sugg-pill" data-query="Where can I enter my discount promo code?" onclick="sendQuickQuery(this)">
+                                    <span class="pill-spark">🎟️</span> Promo Code Vault
+                                </button>
+                                <button type="button" class="sugg-pill" data-query="I want to speak with a human customer support agent" onclick="sendQuickQuery(this)">
+                                    <span class="pill-spark">📡</span> Human Agent Uplink
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="msg-meta">
+                            <span class="msg-time" id="welcomeTime">Just now</span>
+                            <span class="conf-pill conf-high font-mono">100% READY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typing indicator with quantum ripple effect -->
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-core">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+                <span class="typing-label font-mono">NEURAL ENGINE COMPUTING COSINE VECTORS...</span>
+            </div>
+
+            <!-- Predictive Live Autocomplete HUD -->
+            <div class="predictive-hud" id="predictiveHud" style="display: none;">
+                <div class="predictive-header font-mono">
+                    <span>◈ PREDICTIVE NEURAL MATCHES</span>
+                    <span class="pred-esc-hint">Press ESC to dismiss</span>
+                </div>
+                <div class="predictive-list" id="predictiveList"></div>
+            </div>
+
+            <!-- Voice Input Active Waveform Overlay -->
+            <div class="voice-waveform-overlay" id="voiceWaveformOverlay" style="display: none;">
+                <div class="voice-wave-bars">
+                    <span class="v-bar"></span>
+                    <span class="v-bar"></span>
+                    <span class="v-bar"></span>
+                    <span class="v-bar"></span>
+                    <span class="v-bar"></span>
+                    <span class="v-bar"></span>
+                    <span class="v-bar"></span>
+                </div>
+                <span class="voice-status-text font-orbitron" id="voiceStatusText">LISTENING TO VOICE SYNAPSE...</span>
+                <button type="button" class="voice-cancel-btn" onclick="stopVoiceRecognition()">Cancel</button>
+            </div>
+
+            <!-- Input Bar HUD -->
+            <footer class="chat-input-bar">
+                <form id="chatForm" onsubmit="handleChatSubmit(event)">
+                    <div class="input-wrapper">
+                        <!-- Microphone Voice Input Button -->
+                        <button 
+                            type="button" 
+                            id="micBtn" 
+                            class="mic-btn" 
+                            onclick="toggleVoiceRecognition()" 
+                            title="Voice Input (Speech-to-Text) - Click or Ctrl+M"
+                            aria-label="Voice input"
+                        >
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+
+                        <input 
+                            type="text" 
+                            id="queryInput" 
+                            placeholder="Type a transmission or voice query (e.g., 'Track my package', 'Refund policy')..."
+                            autocomplete="off"
+                            required
+                            oninput="handleInputPredictive(this.value)"
+                        >
+
+                        <button type="submit" id="sendBtn" class="send-btn" aria-label="Send message" title="Transmit Question (Enter)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+                <div class="input-hud-footer">
+                    <span class="shortcut-tip font-mono">ENTER &crarr; Transmit &bull; CTRL+M Voice &bull; CTRL+K Focus &bull; ESC Close HUD</span>
+                    <span class="security-chip font-mono">◈ TLS 1.3 256-BIT ENCRYPTED</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Neural Telemetry & Explainability Modal -->
+    <div class="telemetry-modal-backdrop" id="telemetryModal" onclick="closeTelemetryModal(event)" style="display: none;">
+        <div class="telemetry-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <span class="modal-icon">◈</span>
+                    <h3 class="modal-title font-orbitron">NEURAL EXPLAINABILITY & VECTOR TELEMETRY</h3>
+                </div>
+                <button class="modal-close-btn" onclick="hideTelemetryModal()" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body" id="telemetryModalBody">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="modal-footer">
+                <span class="font-mono text-muted text-xs">AURA Cognitive Vector Architecture &bull; NLTK + Scikit-Learn</span>
+                <button class="tele-close-action-btn font-mono" onclick="hideTelemetryModal()">CLOSE TELEMETRY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript Controller -->
+    <script src="/static/js/chat.js?v=3.3"></script>
+</body>
+</html>
