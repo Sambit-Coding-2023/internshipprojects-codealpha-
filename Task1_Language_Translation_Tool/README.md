@@ -15,6 +15,7 @@ A state-of-the-art, production-grade AI language translation workstation and CLI
 
 ## 📑 Table of Contents
 - [Project Overview](#-project-overview)
+- [Technologies & Tools Used (Tech Stack Summary)](#️-technologies--tools-used-tech-stack-summary)
 - [System Architecture](#-system-architecture)
 - [Core Feature Highlights](#-core-feature-highlights)
   - [1. Multi-Engine Neural Routing & Fallback](#1-multi-engine-neural-routing--fault-tolerance)
@@ -45,6 +46,80 @@ Most language translation projects are simplistic wrappers around a single API. 
 3. **Conversational Fluency:** Real-time two-way voice communication with automatic language detection, speech recognition, and synthesized playback.
 4. **Accuracy Auditing:** Objective back-translation scoring showing semantic preservation percentages before sending translations to clients or audiences.
 5. **Developer & Subtitle Friendly:** Preserves timestamps in video subtitle files and shields programming code syntax from unwanted translation.
+
+---
+
+## 🛠️ Technologies & Tools Used (Tech Stack Summary)
+
+A breakdown of all libraries, frameworks, APIs, and algorithms used to build **Task 1 (LingoStudio AI)**:
+
+### 1. ⚙️ Backend & Framework
+* **Python 3.10 / 3.11**: Primary core language for server endpoints, translation business logic, and CLI toolchains.
+* **Flask (v3.0.0)**: Lightweight WSGI web application framework used to build RESTful API endpoints (`/api/translate`, `/api/tone`, `/api/verify`, `/api/dictionary`, `/api/tts`), serve static assets, and render responsive templates.
+* **Requests (v2.31.0)**: Robust HTTP networking library powering external API handshakes with timeout handling, retry logic, and custom user-agent headers.
+
+### 2. 🧠 Translation & NLP Engine Pipeline
+* **Deep-Translator (v1.11.0)**: Multi-backend translation library orchestrating Google Translate, MyMemory Translation Memory, and LibreTranslate services.
+* **Custom Multi-Tier Fallback Orchestrator (`translator.py`)**: Automatic failover engine that sequences translation requests through primary neural backends down to localized fallback phrasebooks for zero downtime.
+* **Heuristic Unicode Script Auto-Detector (`languages.py`)**: High-speed, offline regex script analyzer classifying languages across Latin, Cyrillic, Devanagari, Arabic, Hanzi/Kanji, Hangul, Hiragana/Katakana, Greek, and Hebrew without external cloud latency.
+* **Rule-Based Tone & Formality Adapter (`tone_adapter.py`)**: Grammatical post-processor modifying output syntax across four linguistic registers:
+  - *Formal / Professional*: Honorific substitution, passive voice conversions, and professional phrasing.
+  - *Casual / Colloquial*: Contractions, conversational slang, and informal idioms.
+  - *Academic*: Scholarly lexical substitutions and objective phrasing.
+  - *Simplified*: Lexical pruning and syntax simplification for language learners.
+* **Syntax Shield & Document Parser (`text_processor.py`)**: Regex-based AST tagger that protects code blocks (```code```), inline backticks, Markdown anchors, HTML tags, and `.srt`/`.vtt` subtitle timestamp indices from corruption during translation.
+* **Round-Trip Semantic Verifier (`verifier.py`)**: Quality Assurance (QA) engine computing back-translation semantic preservation using token-overlap Jaccard and Levenshtein distance metrics.
+* **Lexical & Dictionary Service (`dictionary_service.py`)**: Integration with the **Free Dictionary API** providing instant phonetics, definitions, part-of-speech tags, and usage examples.
+
+### 3. 🎙️ Speech, Voice & Audio Synthesis
+* **gTTS (Google Text-to-Speech v2.5.0)**: Server-side audio synthesis generator rendering natural MP3 vocalizations streamed directly to the browser.
+* **Web Speech API (`SpeechRecognition`)**: Browser-native real-time voice dictation with automatic speech-to-text transcription across 100+ locales.
+* **Web Speech API (`SpeechSynthesis`)**: Zero-latency client-side voice synthesizer enabling bidirectional spoken conversation.
+* **HTML5 Web Audio & Media Elements**: Dual audio pipeline providing instant audio preview, variable pitch/rate controls, and audio download options.
+
+### 4. 🎨 Frontend & Design Architecture
+* **HTML5 Semantic Architecture**: Accessible, screen-reader friendly markup with dynamic tabbed studio workspaces.
+* **Vanilla CSS3 (Glassmorphism Design System)**:
+  - Modern dark cyber-studio theme with backdrop filters (`backdrop-filter: blur(16px)`).
+  - CSS Custom Properties (variables) for dynamic theme palettes.
+  - Flexbox and Grid layouts optimized for desktop, tablet, and mobile displays.
+  - Micro-animations, glow states, and interactive feedback indicators.
+* **Vanilla JavaScript (ES6+)**:
+  - Modular, zero-framework architecture for fast page loads (<150ms).
+  - Debounced real-time input listening (380ms) for live translation.
+  - `localStorage` client persistence for translation history, favorites, and spaced-repetition flashcards.
+  - Interactive **Command Palette (`Ctrl + K`)** spotlight modal for instant keyboard navigation.
+
+### 5. 🧪 Testing, Quality Assurance & Benchmarking
+* **Pytest (v8.0.0)**: Comprehensive test suite of **24 automated unit tests** verifying multi-engine routing, script detection, code shielding, formality adaptation, and API response structures.
+* **Custom Benchmarking Suite (`evaluate.py`)**: Automated latency and accuracy benchmark evaluating word error rate (WER) and response latency across 50 multi-language test pairs.
+
+### 6. 💻 Command Line Interface (CLI)
+* **`argparse` & Standard Library (`cli.py`, `translate_cli.py`)**: Production-ready terminal CLI providing interactive REPL mode, piping support (`echo "hello" | python cli.py`), batch document translation, and colored terminal outputs.
+
+---
+
+### 📋 Summary Matrix
+
+| Category | Component / Tool | Role in Project 1 |
+| :--- | :--- | :--- |
+| **Language** | Python 3.10 / 3.11 | Core application programming language |
+| **Web Server** | Flask 3.0.0 | REST API endpoints, routing, and asset serving |
+| **HTTP Client** | Requests 2.31.0 | Network requests to external APIs with retry logic |
+| **Translation** | deep-translator 1.11.0 | Google, MyMemory, and LibreTranslate neural wrappers |
+| **Custom Engine** | Multi-Engine Failover (`translator.py`) | Resilience pipeline preventing single-point API outages |
+| **Language Detection** | Unicode Script Heuristics (`languages.py`) | Zero-latency offline language & alphabet detection |
+| **Linguistic Styling** | Tone Adapter (`tone_adapter.py`) | Formal, Casual, Academic, and Simplified styles |
+| **AST / Syntax Shield** | Regex Shield (`text_processor.py`) | Protects code blocks, markdown tags, and `.srt` timestamps |
+| **Verification** | Quality Assurance (`verifier.py`) | Semantic back-translation integrity index scoring |
+| **Dictionary** | Free Dictionary REST API | Real-time definitions, phonetic IPA, and audio |
+| **Audio (Server)** | gTTS 2.5.0 | Server-side MP3 voice synthesis stream |
+| **Speech (Client)** | Web Speech API | Browser-native microphone STT dictation and TTS readout |
+| **UI Styling** | Modern CSS3 Glassmorphism | Dark studio layout, responsive design, custom variables |
+| **Client Logic** | Vanilla JavaScript (ES6+) | Live debounced translation, history, flashcards, Command Palette |
+| **Testing** | Pytest 8.0.0 | 24 automated unit and integration tests |
+| **Benchmarking** | Custom Test Harness (`evaluate.py`) | Latency, throughput, and semantic accuracy evaluation |
+| **CLI Tooling** | `argparse` & `sys` (`translate_cli.py`) | Terminal REPL, stdin/stdout piping, and file translation |
 
 ---
 
