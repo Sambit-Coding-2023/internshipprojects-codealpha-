@@ -1,0 +1,44 @@
+{
+  "name": "auralis-ai-music-generator",
+  "version": "2.1.0",
+  "description": "Crouton Alpha — AI Music Generation Platform with auth (email + Google) + neural MusicGen (local GPU / HF Spaces)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "start:neural": "cross-env USE_NEURAL_AI=true node server.js",
+    "start:neural:gpu": "cross-env USE_NEURAL_AI=true NEURAL_BACKEND=local node server.js",
+    "start:neural:cloud": "cross-env USE_NEURAL_AI=true NEURAL_BACKEND=hf-spaces node server.js",
+    "test": "node --check server.js && node --check backend/musicEngine.js && node --check backend/auth.js && node --check backend/neuralClient.js && node --check backend/googleAuth.js && node --check backend/firebaseAuth.js",
+    "setup:neural": "pip install -r backend/requirements.txt",
+    "setup:neural:gpu": "pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121 && pip install -r backend/requirements.txt"
+  },
+  "keywords": [
+    "ai",
+    "music-generation",
+    "web-audio",
+    "express",
+    "musicgen",
+    "auth",
+    "google-auth",
+    "hf-spaces"
+  ],
+  "author": "Crouton Alpha",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^18.0.10",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.7.0",
+    "google-auth-library": "^9.9.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

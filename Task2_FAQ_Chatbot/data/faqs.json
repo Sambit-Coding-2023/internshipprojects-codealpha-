@@ -1,0 +1,1351 @@
+[
+  {
+    "id": 1,
+    "category": "Orders",
+    "question": "How do I track my order status?",
+    "patterns": [
+      "Track my order",
+      "Where is my package?",
+      "How to check order delivery status?",
+      "Can I trace my shipment?",
+      "Order tracking number",
+      "Check shipment progress",
+      "I need to trace my delivery",
+      "Where is my order right now?"
+    ],
+    "answer": "You can track your order in real-time by going to the 'My Orders' section in your account dashboard and clicking 'Track Order'. We also send an email and SMS with a live tracking link once your order ships.",
+    "tags": [
+      "order",
+      "track",
+      "tracking",
+      "package",
+      "shipment",
+      "delivery",
+      "trace"
+    ]
+  },
+  {
+    "id": 2,
+    "category": "Orders",
+    "question": "Can I cancel or modify my order after placing it?",
+    "patterns": [
+      "Cancel my order",
+      "Can I change items in my order?",
+      "I want to cancel the purchase",
+      "Change shipping address after ordering",
+      "Stop my order before dispatch",
+      "Can I cancel my recent purchase?",
+      "I want to change the delivery address of my order"
+    ],
+    "answer": "Orders can be modified or canceled within 60 minutes of placement. Visit 'My Orders' > 'Order Details' > 'Cancel Order' or update delivery address. If the order has already been processed or dispatched, you can initiate a return once delivered.",
+    "tags": [
+      "cancel",
+      "modify",
+      "change",
+      "address",
+      "stop",
+      "order",
+      "purchase"
+    ]
+  },
+  {
+    "id": 3,
+    "category": "Shipping",
+    "question": "What are your delivery options and shipping times?",
+    "patterns": [
+      "Shipping time",
+      "How long does delivery take?",
+      "Do you offer express shipping?",
+      "When will my order arrive?",
+      "Standard delivery vs express delivery",
+      "How many days will shipping take?",
+      "Do you deliver within 2 days?",
+      "Expected delivery timeframe"
+    ],
+    "answer": "Standard shipping typically takes 3 to 5 business days. Express delivery arrives within 1 to 2 business days. Free standard shipping is automatically applied on orders over $50.",
+    "tags": [
+      "shipping",
+      "delivery",
+      "time",
+      "speed",
+      "express",
+      "days",
+      "transit",
+      "arrive"
+    ]
+  },
+  {
+    "id": 4,
+    "category": "Shipping",
+    "question": "Do you ship internationally?",
+    "patterns": [
+      "International shipping",
+      "Do you deliver outside the United States?",
+      "Worldwide delivery",
+      "Can I order from other countries?",
+      "Global shipping options",
+      "Can you deliver to Europe or Japan?",
+      "Do you ship abroad?",
+      "Overseas shipping"
+    ],
+    "answer": "Yes, we ship to over 60 countries worldwide including Canada, Europe, Asia, and Australia. International shipping typically takes 7 to 14 business days depending on customs clearance.",
+    "tags": [
+      "international",
+      "worldwide",
+      "global",
+      "foreign",
+      "countries",
+      "customs",
+      "abroad",
+      "overseas"
+    ]
+  },
+  {
+    "id": 5,
+    "category": "Returns & Refunds",
+    "question": "What is your return and refund policy?",
+    "patterns": [
+      "Return policy",
+      "How do I return an item?",
+      "Can I get a refund?",
+      "How many days do I have to return a product?",
+      "Refund process",
+      "What is your refund and return policy?",
+      "Can I send back an unused shirt?",
+      "How do I return items?"
+    ],
+    "answer": "We offer a 30-day hassle-free return policy from the date of delivery. Items must be unused, in original packaging, and include all tags. Once we receive your return, refunds are issued within 3-5 business days to your original payment method.",
+    "tags": [
+      "return",
+      "refund",
+      "policy",
+      "send back",
+      "money back",
+      "exchange"
+    ]
+  },
+  {
+    "id": 6,
+    "category": "Returns & Refunds",
+    "question": "How long does it take to receive a refund?",
+    "patterns": [
+      "When will I get my refund?",
+      "Refund time frame",
+      "Money returned to bank",
+      "How long for refund to process?",
+      "Pending refund status",
+      "When will my money be returned to my card?",
+      "How long does a refund take?"
+    ],
+    "answer": "Once our warehouse inspects the returned item (usually within 48 hours of arrival), your refund will be processed immediately. Credit card refunds typically take 3-5 business days to reflect in your bank account.",
+    "tags": [
+      "refund",
+      "time",
+      "bank",
+      "credit card",
+      "deposit",
+      "money",
+      "process"
+    ]
+  },
+  {
+    "id": 7,
+    "category": "Payments",
+    "question": "What payment methods do you accept?",
+    "patterns": [
+      "Payment options",
+      "How can I pay?",
+      "Do you take PayPal or Apple Pay?",
+      "Can I pay with credit card?",
+      "Accepted forms of payment",
+      "Can I pay using Apple Pay or PayPal?",
+      "Do you accept Visa cards?"
+    ],
+    "answer": "We accept major credit/debit cards (Visa, MasterCard, American Express, Discover), PayPal, Apple Pay, Google Pay, and buy-now-pay-later services including Klarna and Afterpay.",
+    "tags": [
+      "payment",
+      "methods",
+      "credit card",
+      "paypal",
+      "apple pay",
+      "google pay",
+      "klarna",
+      "visa",
+      "mastercard"
+    ]
+  },
+  {
+    "id": 8,
+    "category": "Payments",
+    "question": "Is my payment information secure?",
+    "patterns": [
+      "Is payment safe?",
+      "Security of credit card details",
+      "Are transactions encrypted?",
+      "Safe checkout process",
+      "PCI compliance",
+      "Is it safe to enter my credit card info?",
+      "Payment security and fraud protection"
+    ],
+    "answer": "Yes, all transactions are secured with 256-bit SSL encryption and processed through PCI-DSS Level 1 compliant payment gateways. We never store your full card details on our servers.",
+    "tags": [
+      "secure",
+      "safety",
+      "safe",
+      "encryption",
+      "ssl",
+      "pci",
+      "card",
+      "protection",
+      "fraud"
+    ]
+  },
+  {
+    "id": 9,
+    "category": "Account",
+    "question": "How do I reset my password?",
+    "patterns": [
+      "Forgot password",
+      "Reset my password",
+      "Cannot login to my account",
+      "Change account password",
+      "Password recovery link",
+      "I forgot my password, how to reset?",
+      "Can't login to my account"
+    ],
+    "answer": "Click on the 'Sign In' button, select 'Forgot Password?', enter your registered email address, and we will send you a password reset link valid for 24 hours.",
+    "tags": [
+      "password",
+      "reset",
+      "forgot",
+      "account",
+      "login",
+      "recover"
+    ]
+  },
+  {
+    "id": 10,
+    "category": "Account",
+    "question": "How do I update my email address or personal details?",
+    "patterns": [
+      "Change email address",
+      "Update profile info",
+      "Edit account details",
+      "Change phone number",
+      "Manage account settings",
+      "How to change my profile email address?",
+      "Update phone number in settings"
+    ],
+    "answer": "Log in to your account and navigate to 'Account Settings' > 'Profile'. Here you can update your name, email address, phone number, and default shipping addresses.",
+    "tags": [
+      "account",
+      "email",
+      "profile",
+      "update",
+      "details",
+      "phone",
+      "settings"
+    ]
+  },
+  {
+    "id": 11,
+    "category": "Customer Support",
+    "question": "How can I contact customer support?",
+    "patterns": [
+      "Contact support",
+      "Speak to a real person",
+      "Customer care phone number",
+      "Support email address",
+      "Help desk contact",
+      "I want to speak with a human customer support agent",
+      "What is your support email and phone number?"
+    ],
+    "answer": "Our customer support team is available 24/7! You can reach us via email at support@example.com, live chat on this website, or call our toll-free hotline at 1-800-555-0199 (Mon-Fri 9am-6pm EST).",
+    "tags": [
+      "support",
+      "contact",
+      "human",
+      "phone",
+      "email",
+      "help",
+      "agent",
+      "representative"
+    ]
+  },
+  {
+    "id": 12,
+    "category": "Promotions",
+    "question": "How do I apply a discount code or coupon?",
+    "patterns": [
+      "Use coupon code",
+      "Apply discount",
+      "Where to enter promo code?",
+      "Coupon not working",
+      "Voucher code application",
+      "Where can I enter my discount promo code?",
+      "Coupon is not applying at checkout"
+    ],
+    "answer": "During checkout, you will see a 'Promo Code / Gift Card' field on the payment summary page. Enter your code and click 'Apply' to see the discount deducted from your subtotal.",
+    "tags": [
+      "coupon",
+      "discount",
+      "promo",
+      "voucher",
+      "code",
+      "offer",
+      "checkout"
+    ]
+  },
+  {
+    "id": 13,
+    "category": "Returns & Refunds",
+    "question": "What should I do if my item arrives damaged, defective, or missing parts?",
+    "patterns": [
+      "Damaged item received",
+      "Broken product in delivery",
+      "Defective item upon arrival",
+      "My order arrived broken or damaged",
+      "Missing items from my package",
+      "Item is faulty or not working",
+      "Report damaged shipment"
+    ],
+    "answer": "If your order arrives damaged, defective, or missing items, please report it within 7 days of delivery. Go to 'My Orders' > 'Report Issue' and upload photos of the damage. We will immediately issue a free expedited replacement or full refund with no return fee required.",
+    "tags": [
+      "damaged",
+      "broken",
+      "defective",
+      "missing",
+      "faulty",
+      "parts",
+      "replacement"
+    ]
+  },
+  {
+    "id": 14,
+    "category": "Returns & Refunds",
+    "question": "Can I exchange an item for a different size, color, or model?",
+    "patterns": [
+      "Exchange for different size",
+      "Swap item color",
+      "Can I get a size exchange?",
+      "Exchange process",
+      "How to swap an item for another size?",
+      "Product exchange policy"
+    ],
+    "answer": "Yes! We offer direct size and color exchanges within 30 days of delivery. Visit 'My Orders' > 'Start Exchange', pick your desired replacement size/color, and we will dispatch your replacement immediately with a prepaid return label for the original item.",
+    "tags": [
+      "exchange",
+      "swap",
+      "size",
+      "color",
+      "replacement",
+      "switch",
+      "fit"
+    ]
+  },
+  {
+    "id": 15,
+    "category": "Shipping",
+    "question": "What happens if tracking shows delivered but I have not received my package?",
+    "patterns": [
+      "Package says delivered but not here",
+      "Missing delivery",
+      "Stolen package",
+      "Cannot find my package",
+      "Tracking says delivered but nothing arrived",
+      "Lost shipment inquiry"
+    ],
+    "answer": "If tracking indicates delivery but you haven't received it, check your porch, mailroom, and with neighbors first. Couriers occasionally scan packages up to 24 hours prior to physical drop-off. If it does not arrive within 24 hours, contact customer support for an immediate carrier trace or replacement.",
+    "tags": [
+      "lost",
+      "stolen",
+      "missing",
+      "delivered",
+      "not received",
+      "carrier",
+      "trace"
+    ]
+  },
+  {
+    "id": 16,
+    "category": "Payments",
+    "question": "Do you offer digital or physical gift cards, and how do I redeem them?",
+    "patterns": [
+      "Buy gift card",
+      "How to redeem gift card?",
+      "Gift card balance check",
+      "Can I purchase an e-gift card?",
+      "Use store gift card",
+      "Redeem voucher code"
+    ],
+    "answer": "We offer digital gift cards in amounts from $10 to $500, delivered instantly via email. To redeem, enter your 16-digit gift card code during checkout in the 'Promo Code / Gift Card' section. Gift cards never expire and carry zero maintenance fees.",
+    "tags": [
+      "gift card",
+      "voucher",
+      "redeem",
+      "balance",
+      "e-gift",
+      "store credit"
+    ]
+  },
+  {
+    "id": 17,
+    "category": "Promotions",
+    "question": "Do you offer student, military, or healthcare worker discounts?",
+    "patterns": [
+      "Student discount",
+      "Military discount",
+      "Do students get 10% off?",
+      "Healthcare worker discount",
+      "First responder discount",
+      "Teacher discount"
+    ],
+    "answer": "Yes! We offer a 15% discount for verified students, active military, veterans, teachers, and healthcare professionals through our verification partner ID.me or UNiDAYS. Verify your status in your account settings to receive your personal discount code.",
+    "tags": [
+      "student",
+      "military",
+      "veteran",
+      "healthcare",
+      "teacher",
+      "discount",
+      "id.me",
+      "unidays"
+    ]
+  },
+  {
+    "id": 18,
+    "category": "Promotions",
+    "question": "What is your price matching policy?",
+    "patterns": [
+      "Do you price match?",
+      "Price match guarantee",
+      "Lower price found on another site",
+      "Can you match competitor price?",
+      "Price adjustment after purchase"
+    ],
+    "answer": "We gladly price match identical, in-stock products sold by major authorized retailers within 14 days of purchase. Simply share a link to the qualifying competitor's listing with our customer support team, and we will refund the price difference.",
+    "tags": [
+      "price match",
+      "guarantee",
+      "adjustment",
+      "competitor",
+      "lower price",
+      "difference"
+    ]
+  },
+  {
+    "id": 19,
+    "category": "Payments",
+    "question": "Can I pay using Bitcoin, Ethereum, or other cryptocurrencies?",
+    "patterns": [
+      "Pay with Bitcoin",
+      "Crypto payment options",
+      "Do you take cryptocurrency?",
+      "Pay with Ethereum or USDT",
+      "Accept crypto checkout"
+    ],
+    "answer": "Yes! We accept cryptocurrency payments including Bitcoin (BTC), Ethereum (ETH), and USDC through our secure BitPay and Coinbase Commerce checkout integrations at no additional transaction fee.",
+    "tags": [
+      "crypto",
+      "cryptocurrency",
+      "bitcoin",
+      "ethereum",
+      "usdt",
+      "bitpay",
+      "btc"
+    ]
+  },
+  {
+    "id": 20,
+    "category": "Payments",
+    "question": "Do you offer Cash on Delivery (COD) as a payment option?",
+    "patterns": [
+      "Cash on delivery",
+      "Can I pay cash when it arrives?",
+      "Do you support COD?",
+      "Pay in cash upon delivery"
+    ],
+    "answer": "Cash on Delivery (COD) is available in select regions and domestic delivery zones for orders under $200. You will see the 'Cash on Delivery' option at checkout if your delivery address qualifies. An exact cash payment is required upon courier drop-off.",
+    "tags": [
+      "cash",
+      "cod",
+      "delivery",
+      "pay on arrival",
+      "cash on delivery"
+    ]
+  },
+  {
+    "id": 21,
+    "category": "Account",
+    "question": "How do I permanently delete my account and data under GDPR / CCPA?",
+    "patterns": [
+      "Delete my account",
+      "Erase my personal data",
+      "Close account permanently",
+      "GDPR data deletion request",
+      "Right to be forgotten"
+    ],
+    "answer": "To permanently delete your account and all associated personal records in compliance with GDPR and CCPA, navigate to 'Account Settings' > 'Privacy & Security' > 'Request Account Deletion'. Your account and historical records will be permanently erased within 48 hours.",
+    "tags": [
+      "delete",
+      "erase",
+      "gdpr",
+      "ccpa",
+      "privacy",
+      "close account",
+      "remove data"
+    ]
+  },
+  {
+    "id": 22,
+    "category": "Orders",
+    "question": "Do you have physical stores or offer in-store curbside pickup?",
+    "patterns": [
+      "Store locations",
+      "Can I pick up in store?",
+      "Curbside pickup",
+      "Where is your retail store?",
+      "Buy online pick up in store (BOPIS)"
+    ],
+    "answer": "Yes, we have 25+ flagship retail locations across North America and Western Europe. During online checkout, choose 'In-Store Pickup' to collect your ready items within 2 hours at your nearest store location free of charge.",
+    "tags": [
+      "store",
+      "location",
+      "pickup",
+      "curbside",
+      "bopis",
+      "retail",
+      "physical store"
+    ]
+  },
+  {
+    "id": 23,
+    "category": "Orders",
+    "question": "Can I place bulk or B2B wholesale orders for my business?",
+    "patterns": [
+      "Bulk ordering",
+      "Wholesale pricing",
+      "B2B corporate orders",
+      "Do you offer bulk discounts?",
+      "Commercial purchase inquiry"
+    ],
+    "answer": "We offer tiered wholesale discounts starting at 20% off for orders of 50 units or more. Visit our 'Corporate & Wholesale' portal or email wholesale@example.com with your tax ID to set up a dedicated commercial account and receive custom quotes.",
+    "tags": [
+      "wholesale",
+      "bulk",
+      "b2b",
+      "business",
+      "corporate",
+      "commercial",
+      "large orders"
+    ]
+  },
+  {
+    "id": 24,
+    "category": "Account",
+    "question": "How do I subscribe or unsubscribe from newsletters and promotional emails?",
+    "patterns": [
+      "Unsubscribe from emails",
+      "Stop marketing messages",
+      "Subscribe to newsletter",
+      "Email preferences",
+      "Turn off promotional notifications"
+    ],
+    "answer": "You can manage your notification preferences anytime under 'Account Settings' > 'Communication Preferences'. Alternatively, click the 'Unsubscribe' link at the bottom of any marketing email to be removed from promotional lists instantly.",
+    "tags": [
+      "newsletter",
+      "unsubscribe",
+      "email",
+      "marketing",
+      "notifications",
+      "sms",
+      "opt out"
+    ]
+  },
+  {
+    "id": 25,
+    "category": "Account",
+    "question": "How do I enable Two-Factor Authentication (2FA) for extra security?",
+    "patterns": [
+      "Enable 2FA",
+      "Two factor authentication",
+      "Set up authenticator app",
+      "Secure login verification",
+      "Account two step verification"
+    ],
+    "answer": "To protect your account with Two-Factor Authentication, go to 'Account Settings' > 'Security' and toggle 'Two-Factor Authentication'. Scan the QR code using Google Authenticator, Authy, or 1Password to activate 2FA codes for future sign-ins.",
+    "tags": [
+      "2fa",
+      "two-factor",
+      "security",
+      "authenticator",
+      "verification",
+      "protect",
+      "login"
+    ]
+  },
+  {
+    "id": 26,
+    "category": "Customer Support",
+    "question": "What are your customer service hours and typical response times?",
+    "patterns": [
+      "Customer support hours",
+      "When is support open?",
+      "Response time for support tickets",
+      "Live chat availability",
+      "Weekend support hours"
+    ],
+    "answer": "Our AI Chatbot and Live Chat desks operate 24/7/365. Human specialist phone support is available Monday through Friday from 9:00 AM to 6:00 PM EST. Email inquiries sent to support@example.com are answered in under 2 hours on average.",
+    "tags": [
+      "hours",
+      "availability",
+      "schedule",
+      "open",
+      "response time",
+      "support hours",
+      "weekend"
+    ]
+  },
+  {
+    "id": 27,
+    "category": "Customer Support",
+    "question": "Do your products come with a warranty or manufacturer guarantee?",
+    "patterns": [
+      "Product warranty",
+      "Warranty policy",
+      "What is your warranty policy?",
+      "Warranty coverage period",
+      "Manufacturer guarantee",
+      "How long is warranty coverage?",
+      "File warranty claim",
+      "Warranty terms and repair"
+    ],
+    "answer": "All brand-new items come with a complimentary 1-Year Limited Manufacturer Warranty covering defects in materials and craftsmanship. Extended 2-Year and 3-Year accidental protection plans are also available at checkout.",
+    "tags": [
+      "warranty",
+      "guarantee",
+      "policy",
+      "coverage",
+      "defect",
+      "repair",
+      "claim",
+      "protection plan"
+    ]
+  },
+  {
+    "id": 28,
+    "category": "Orders",
+    "question": "When will an out-of-stock item be restocked, and can I pre-order?",
+    "patterns": [
+      "Restock date",
+      "Out of stock product",
+      "Can I pre-order an item?",
+      "Notify when item is back in stock",
+      "When will this be available again?"
+    ],
+    "answer": "Popular items are typically restocked within 10 to 14 business days. On any out-of-stock product page, click 'Notify Me When Available' to enter your email and receive instant alerts when inventory arrives. Select items also allow pre-orders.",
+    "tags": [
+      "out of stock",
+      "restock",
+      "preorder",
+      "back in stock",
+      "inventory",
+      "available",
+      "alert"
+    ]
+  },
+  {
+    "id": 29,
+    "category": "Account",
+    "question": "Where can I download tax invoices or VAT receipts for my orders?",
+    "patterns": [
+      "Download invoice",
+      "Tax receipt for order",
+      "VAT invoice copy",
+      "Get purchase receipt PDF",
+      "Print order invoice"
+    ],
+    "answer": "To download an official tax invoice or VAT receipt, go to 'My Orders', find your order, and click 'Download PDF Invoice'. All documents include full billing address, VAT/tax breakdowns, and itemized transaction totals suitable for accounting.",
+    "tags": [
+      "invoice",
+      "receipt",
+      "tax",
+      "vat",
+      "pdf",
+      "accounting",
+      "proof of purchase"
+    ]
+  },
+  {
+    "id": 30,
+    "category": "Shipping",
+    "question": "Which delivery carriers and couriers do you use for shipping?",
+    "patterns": [
+      "Which courier delivers?",
+      "Do you use FedEx or UPS?",
+      "Shipping carrier name",
+      "USPS delivery options",
+      "DHL international courier"
+    ],
+    "answer": "We partner with leading reliable couriers including FedEx, UPS, USPS, and DHL Express. The carrier is automatically selected based on the quickest delivery route to your postal address. Your shipping confirmation email will specify the exact carrier and tracking URL.",
+    "tags": [
+      "carrier",
+      "courier",
+      "fedex",
+      "ups",
+      "usps",
+      "dhl",
+      "shipping partner"
+    ]
+  },
+  {
+    "id": 31,
+    "category": "Shipping",
+    "question": "Can I request to hold my shipment or schedule a specific delivery date?",
+    "patterns": [
+      "Hold my delivery",
+      "Vacation delivery hold",
+      "Schedule delivery date",
+      "Delay package delivery",
+      "Hold package at carrier facility"
+    ],
+    "answer": "Yes! Once your order has shipped, use the tracking link in your email to visit the carrier's portal (e.g., FedEx Delivery Manager or UPS My Choice). There you can request a complimentary vacation hold, specify a delivery date, or route it to a nearby secure pickup locker.",
+    "tags": [
+      "hold",
+      "vacation",
+      "schedule",
+      "delay",
+      "carrier locker",
+      "delivery manager"
+    ]
+  },
+  {
+    "id": 32,
+    "category": "Customer Support",
+    "question": "How can I submit a product review or view verified customer feedback?",
+    "patterns": [
+      "Leave a review",
+      "Rate a product",
+      "Customer reviews and ratings",
+      "Where to write feedback",
+      "Verified buyer review"
+    ],
+    "answer": "After receiving your order, you will receive a review invitation email, or you can visit 'My Orders' > 'Write Review' to share your experience, upload photos, and rate the item from 1 to 5 stars. All verified buyer reviews help other customers!",
+    "tags": [
+      "review",
+      "rating",
+      "stars",
+      "feedback",
+      "customer rating",
+      "write review"
+    ]
+  },
+  {
+    "id": 33,
+    "category": "Gift Cards",
+    "question": "How do I purchase, redeem, or check the balance of a digital gift card?",
+    "patterns": [
+      "Buy a gift card",
+      "How to redeem gift card?",
+      "Check gift card balance",
+      "Gift card promo code",
+      "Digital e-gift card",
+      "Gift voucher redemption"
+    ],
+    "answer": "Digital gift cards can be purchased from our 'Gift Cards' section in values from $25 to $500 and emailed instantly with a personalized message. To redeem or check balance, enter the 16-digit voucher code at checkout or visit 'Account' > 'Gift Card Balance'.",
+    "tags": [
+      "gift card",
+      "voucher",
+      "balance",
+      "redeem",
+      "present",
+      "e-gift",
+      "digital card"
+    ]
+  },
+  {
+    "id": 34,
+    "category": "Loyalty Rewards",
+    "question": "How do VIP Tier membership levels and reward points work?",
+    "patterns": [
+      "VIP membership tiers",
+      "How do reward points work?",
+      "Loyalty club benefits",
+      "Earn points on purchases",
+      "VIP perks and discounts",
+      "Redeem reward points"
+    ],
+    "answer": "Every dollar spent earns 5 Reward Points. Tiers unlock automatically: Silver (0-500 pts), Gold (500-1500 pts with free express shipping), and Platinum (1500+ pts with 15% anniversary discount and early access to sales). Redeem 100 points for $5 off at checkout.",
+    "tags": [
+      "vip",
+      "loyalty",
+      "rewards",
+      "points",
+      "tier",
+      "silver",
+      "gold",
+      "platinum",
+      "perks"
+    ]
+  },
+  {
+    "id": 35,
+    "category": "Orders",
+    "question": "What should I do if an item is missing from my package delivery?",
+    "patterns": [
+      "Missing item from package",
+      "Package was incomplete",
+      "Item was missing from delivery",
+      "Did not receive all items in order",
+      "Partial delivery missing product"
+    ],
+    "answer": "If your order was split into multiple shipments, check your tracking email to see if remaining items are in a separate box. If an item is missing from the final package, please contact support within 7 days of delivery with your order ID, and we will dispatch a replacement immediately.",
+    "tags": [
+      "missing",
+      "incomplete",
+      "partial",
+      "not received",
+      "package",
+      "lost item"
+    ]
+  },
+  {
+    "id": 36,
+    "category": "Orders",
+    "question": "My order arrived damaged or defective. How do I get an immediate replacement?",
+    "patterns": [
+      "Item arrived broken",
+      "Damaged package delivery",
+      "Product arrived defective",
+      "Broken item in mail",
+      "Report damaged goods"
+    ],
+    "answer": "We sincerely apologize for any transit damage! Visit 'My Orders' > 'Report Issue' within 14 days, upload a quick photo of the damage and packing box, and our automated system will immediately issue a prepaid replacement order or full refund with no return required.",
+    "tags": [
+      "damaged",
+      "broken",
+      "defective",
+      "cracked",
+      "replacement",
+      "faulty",
+      "transit"
+    ]
+  },
+  {
+    "id": 37,
+    "category": "Shipping",
+    "question": "Do you deliver to military APO/FPO/DPO addresses and PO Boxes?",
+    "patterns": [
+      "Ship to APO FPO addresses",
+      "Military base delivery",
+      "Can you ship to a PO Box?",
+      "DPO address shipping",
+      "Post office box delivery"
+    ],
+    "answer": "Yes! We proudly ship to all military APO, FPO, and DPO addresses as well as standard P.O. Boxes via USPS Priority Mail. Please ensure the recipient's full unit and box number are entered in the address field.",
+    "tags": [
+      "apo",
+      "fpo",
+      "dpo",
+      "military",
+      "po box",
+      "post office",
+      "usps"
+    ]
+  },
+  {
+    "id": 38,
+    "category": "Shipping",
+    "question": "What are the customs fees, import taxes, and duties for international shipments?",
+    "patterns": [
+      "Customs fees for international delivery",
+      "Import taxes and duty",
+      "Will I pay VAT on import?",
+      "Cross border customs charges",
+      "Tariff and duties calculation"
+    ],
+    "answer": "For most international destinations, all applicable VAT, import taxes, and duties are calculated and prepaid at checkout (DDP - Delivered Duty Paid), so there are no unexpected fees upon delivery. If your country requires payment upon arrival, local customs will contact you directly.",
+    "tags": [
+      "customs",
+      "duty",
+      "duties",
+      "tax",
+      "vat",
+      "import",
+      "tariff",
+      "international"
+    ]
+  },
+  {
+    "id": 39,
+    "category": "Returns & Refunds",
+    "question": "Can I exchange an item for a different size, style, or color instead of a refund?",
+    "patterns": [
+      "Exchange for different size",
+      "Swap item color",
+      "Product exchange request",
+      "How do exchanges work?",
+      "Can I swap this shirt for larger size?"
+    ],
+    "answer": "Yes! Our seamless instant exchange portal allows you to choose a different size or color online before returning your original item. Head to 'Returns & Exchanges', select your desired replacement, and your new item will ship right away with free return shipping on the original.",
+    "tags": [
+      "exchange",
+      "swap",
+      "size",
+      "color",
+      "fit",
+      "replacement",
+      "returns"
+    ]
+  },
+  {
+    "id": 40,
+    "category": "Returns & Refunds",
+    "question": "Do you charge any restocking fees or return shipping label deduction fees?",
+    "patterns": [
+      "Restocking fee on returns",
+      "Is return shipping deducted?",
+      "Return shipping cost",
+      "Are returns completely free?",
+      "Do I pay for return label?"
+    ],
+    "answer": "Domestic returns within the US and Canada are 100% free with zero restocking fees! Prepaid digital return labels are generated at no charge. For international returns, a nominal carrier label fee of $12 is deducted from the refund total.",
+    "tags": [
+      "restocking",
+      "fee",
+      "free return",
+      "label fee",
+      "deduction",
+      "cost",
+      "policy"
+    ]
+  },
+  {
+    "id": 41,
+    "category": "Payments",
+    "question": "Can I split my purchase into installments using Klarna, Afterpay, or Affirm?",
+    "patterns": [
+      "Pay in installments",
+      "Do you take Klarna?",
+      "Afterpay split payment",
+      "Affirm financing monthly",
+      "Buy now pay later options"
+    ],
+    "answer": "Yes, we support Buy Now, Pay Later (BNPL) through Klarna, Afterpay, and Affirm. At checkout, select your preferred BNPL provider to split your total order into 4 interest-free installments paid every two weeks.",
+    "tags": [
+      "klarna",
+      "afterpay",
+      "affirm",
+      "bnpl",
+      "installments",
+      "split pay",
+      "financing"
+    ]
+  },
+  {
+    "id": 42,
+    "category": "Payments",
+    "question": "Why was my credit card or debit payment declined during checkout?",
+    "patterns": [
+      "Card payment declined",
+      "Why did payment fail?",
+      "Credit card error at checkout",
+      "Payment failed transaction",
+      "Bank declined purchase"
+    ],
+    "answer": "Card declines typically happen due to: 1) a billing zip code mismatch, 2) an incorrect CVV security code or expiration date, 3) bank fraud security flags on online transactions, or 4) insufficient funds. We recommend contacting your issuing bank or trying an alternative payment method like PayPal or Apple Pay.",
+    "tags": [
+      "declined",
+      "failed",
+      "card error",
+      "cvv",
+      "billing address",
+      "bank flag",
+      "payment failure"
+    ]
+  },
+  {
+    "id": 43,
+    "category": "Account",
+    "question": "How can I permanently delete my account and personal data (GDPR / CCPA request)?",
+    "patterns": [
+      "Delete my account",
+      "Erase my personal data",
+      "GDPR account deletion",
+      "CCPA data removal request",
+      "Close profile permanently"
+    ],
+    "answer": "To permanently close your account and delete all associated personal data under GDPR and CCPA regulations, navigate to 'Account Settings' > 'Privacy & Data' > 'Request Account Deletion'. Your request will be fulfilled within 30 days after confirmation.",
+    "tags": [
+      "delete account",
+      "privacy",
+      "gdpr",
+      "ccpa",
+      "erase data",
+      "remove profile",
+      "close account"
+    ]
+  },
+  {
+    "id": 44,
+    "category": "Account",
+    "question": "Can I place an order as a guest without creating an account?",
+    "patterns": [
+      "Guest checkout",
+      "Order without account",
+      "Do I have to register to buy?",
+      "Shop as guest",
+      "Checkout as guest"
+    ],
+    "answer": "Absolutely! Guest checkout is fully supported. Simply add items to your cart, proceed to checkout, and enter your email and delivery details without setting a password. You can convert your guest purchase into a permanent account anytime later.",
+    "tags": [
+      "guest",
+      "checkout",
+      "register",
+      "no account",
+      "guest purchase",
+      "quick buy"
+    ]
+  },
+  {
+    "id": 45,
+    "category": "Customer Support",
+    "question": "Where are your physical retail stores, pop-up shops, or authorized service centers located?",
+    "patterns": [
+      "Retail store locations",
+      "Find a physical store",
+      "Pop-up shops near me",
+      "Authorized service centers",
+      "Store locator address"
+    ],
+    "answer": "We operate flagship retail experiences in New York, Los Angeles, Chicago, London, and Tokyo. Visit our online 'Store Locator' map to view local addresses, operating hours, and book in-person styling or technical support appointments.",
+    "tags": [
+      "store",
+      "retail",
+      "physical",
+      "locations",
+      "flagship",
+      "store locator",
+      "address"
+    ]
+  },
+  {
+    "id": 46,
+    "category": "Customer Support",
+    "question": "How do I submit formal feedback, compliments, or file an executive complaint?",
+    "patterns": [
+      "Submit customer feedback",
+      "File formal complaint",
+      "Executive escalations contact",
+      "Send feedback to management",
+      "Customer grievance procedure"
+    ],
+    "answer": "We value your voice! For formal feedback or escalating an unresolved issue, email our Executive Care Team directly at escalations@example.com. A senior customer relationship manager will review your case and respond within 24 business hours.",
+    "tags": [
+      "complaint",
+      "feedback",
+      "escalation",
+      "executive care",
+      "grievance",
+      "management"
+    ]
+  },
+  {
+    "id": 47,
+    "category": "Discounts & Promotions",
+    "question": "Do you offer student, military, educator, or healthcare worker discounts?",
+    "patterns": [
+      "Student discount code",
+      "Military service discount",
+      "Healthcare worker discount",
+      "Teacher discount verification",
+      "First responder promo"
+    ],
+    "answer": "Yes! We offer a 15% discount for verified students, active military, veterans, teachers, and healthcare workers. Verify your status in under 60 seconds through our ID.me or StudentBeans integration at checkout to receive an exclusive promo code.",
+    "tags": [
+      "student",
+      "military",
+      "veteran",
+      "teacher",
+      "healthcare",
+      "first responder",
+      "id.me",
+      "discount"
+    ]
+  },
+  {
+    "id": 48,
+    "category": "Discounts & Promotions",
+    "question": "Do you offer price matching if an item goes on sale elsewhere?",
+    "patterns": [
+      "Price match guarantee",
+      "Will you match competitor price?",
+      "Price matching policy",
+      "Competitor sale price match",
+      "Partial refund for price drop"
+    ],
+    "answer": "Yes! If you find an identical in-stock product sold by an authorized retailer at a lower price within 14 days of purchase, send the active product link to support@example.com, and we will happily match the price or refund the difference.",
+    "tags": [
+      "price match",
+      "price drop",
+      "competitor",
+      "guarantee",
+      "refund difference",
+      "sale match"
+    ]
+  },
+  {
+    "id": 49,
+    "category": "Subscriptions",
+    "question": "How does the Subscribe & Save auto-delivery subscription service work?",
+    "patterns": [
+      "Subscribe and save program",
+      "Auto-delivery frequency",
+      "Recurring product subscription",
+      "How does subscription work?",
+      "Auto ship orders"
+    ],
+    "answer": "Subscribe & Save lets you set recurring deliveries for everyday essentials every 30, 60, or 90 days. Every subscription order receives an automatic 15% discount and complimentary free priority shipping. You can pause or cancel anytime with zero commitments.",
+    "tags": [
+      "subscription",
+      "subscribe and save",
+      "recurring",
+      "auto-ship",
+      "discount",
+      "auto deliver"
+    ]
+  },
+  {
+    "id": 50,
+    "category": "Subscriptions",
+    "question": "How do I skip a delivery, change shipment frequency, or cancel my subscription?",
+    "patterns": [
+      "Cancel my subscription",
+      "Skip subscription delivery",
+      "Change delivery frequency",
+      "Pause auto ship",
+      "Modify subscription items"
+    ],
+    "answer": "Log into your account and navigate to 'My Subscriptions'. From there, you can skip an upcoming cycle, change delivery dates, swap items, or click 'Cancel Subscription' with zero penalty or hidden cancellation fees.",
+    "tags": [
+      "cancel subscription",
+      "skip delivery",
+      "pause",
+      "frequency",
+      "modify auto ship",
+      "stop subscription"
+    ]
+  },
+  {
+    "id": 51,
+    "category": "Product & Warranty",
+    "question": "How do I find product size guides, dimensions, and measurement charts?",
+    "patterns": [
+      "Size guide chart",
+      "Product dimensions measurements",
+      "How does sizing run?",
+      "Measurement guide for clothing",
+      "Shoe sizing chart"
+    ],
+    "answer": "On every product detail page, click the 'Size & Fit Guide' link right above the size selector. You will find comprehensive sizing conversion tables (US, UK, EU, CM), garment dimensions, and model measurement references to ensure the perfect fit.",
+    "tags": [
+      "size guide",
+      "dimensions",
+      "measurements",
+      "fit",
+      "sizing chart",
+      "conversion"
+    ]
+  },
+  {
+    "id": 52,
+    "category": "Product & Warranty",
+    "question": "Are replacement parts, user manuals, and repair accessories available for purchase?",
+    "patterns": [
+      "Buy replacement parts",
+      "Download user manual PDF",
+      "Order repair components",
+      "Product spare parts",
+      "Instruction manual download"
+    ],
+    "answer": "Yes! We support sustainable product longevity. Visit our 'Parts & Manuals' directory to download digital PDF user manuals or purchase genuine replacement components, cables, adapters, and modular attachments.",
+    "tags": [
+      "replacement parts",
+      "spare parts",
+      "user manual",
+      "repair",
+      "pdf instructions",
+      "cables"
+    ]
+  },
+  {
+    "id": 53,
+    "category": "Security & Privacy",
+    "question": "How is my personal information collected, processed, and safeguarded under your privacy policy?",
+    "patterns": [
+      "Privacy policy details",
+      "How do you protect my data?",
+      "Is my personal info sold?",
+      "Data protection security standards",
+      "User privacy rights"
+    ],
+    "answer": "We strictly adhere to ISO 27001 data security standards, SOC2 compliance, and global GDPR principles. We never sell, rent, or trade your personal data. All data transmission uses end-to-end TLS 1.3 encryption, and payment tokens are stored in PCI-DSS Level 1 certified vaults.",
+    "tags": [
+      "privacy policy",
+      "data protection",
+      "security",
+      "gdpr",
+      "soc2",
+      "safeguard",
+      "confidential"
+    ]
+  },
+  {
+    "id": 54,
+    "category": "Sustainability",
+    "question": "What eco-friendly packaging and carbon-neutral shipping options do you use?",
+    "patterns": [
+      "Eco-friendly packaging",
+      "Carbon neutral shipping",
+      "Sustainable shipping materials",
+      "Recyclable shipping boxes",
+      "Environmental initiatives"
+    ],
+    "answer": "100% of our packaging boxes, mailers, and protective padding are made from post-consumer recycled paper and biodegradable plant inks. We also partner with certified carbon offset initiatives to neutralize 100% of delivery transit emissions at no extra cost to you.",
+    "tags": [
+      "sustainability",
+      "eco-friendly",
+      "carbon neutral",
+      "recyclable",
+      "green shipping",
+      "environment"
+    ]
+  },
+  {
+    "id": 55,
+    "category": "Orders",
+    "question": "Can I add items to an existing order or combine two separate shipments?",
+    "patterns": [
+      "Combine two orders",
+      "Add item to existing order",
+      "Merge separate shipments",
+      "Combine shipping for two orders",
+      "Can I add to recent purchase?"
+    ],
+    "answer": "If both orders were placed within 60 minutes and have not reached the fulfillment warehouse staging line, our automated system will attempt to combine them into a single shipment. Contact customer care via live chat with both order numbers to request shipment merging.",
+    "tags": [
+      "combine",
+      "merge",
+      "add item",
+      "multiple orders",
+      "consolidate",
+      "shipment"
+    ]
+  },
+  {
+    "id": 56,
+    "category": "Orders",
+    "question": "What happens if a package is marked delivered but I cannot locate it?",
+    "patterns": [
+      "Marked delivered but not here",
+      "Package says delivered but missing",
+      "Cannot find delivered parcel",
+      "Stolen package delivery",
+      "Package marked delivered yesterday"
+    ],
+    "answer": "Carriers sometimes scan packages early or place them in sheltered spots like back porches, building management offices, or mail parcel lockers. If your package cannot be found after 24 hours, contact us and we will open a carrier investigation or dispatch an immediate replacement.",
+    "tags": [
+      "marked delivered",
+      "missing package",
+      "stolen",
+      "lost parcel",
+      "not arrived",
+      "investigation"
+    ]
+  },
+  {
+    "id": 57,
+    "category": "Payments",
+    "question": "Do you accept international currencies, and how are conversion rates calculated?",
+    "patterns": [
+      "International currencies supported",
+      "Can I pay in EUR GBP or CAD?",
+      "Currency conversion rates",
+      "Foreign transaction fee",
+      "Shop in local currency"
+    ],
+    "answer": "Our storefront supports over 45 international currencies including USD, EUR, GBP, CAD, AUD, and JPY. Currency exchange rates are synced daily using official interbank rates with zero hidden foreign exchange markups at checkout.",
+    "tags": [
+      "currency",
+      "international",
+      "forex",
+      "eur",
+      "gbp",
+      "cad",
+      "aud",
+      "conversion"
+    ]
+  },
+  {
+    "id": 58,
+    "category": "Discounts & Promotions",
+    "question": "Can I stack multiple coupon promo codes on a single transaction?",
+    "patterns": [
+      "Stack coupons",
+      "Use two promo codes at once",
+      "Can I combine discount codes?",
+      "Multiple coupons checkout",
+      "Stack promotional offers"
+    ],
+    "answer": "Generally, our checkout accepts one alphanumeric promo code per transaction. However, promotional discount codes CAN be combined with store credit vouchers, digital gift cards, and automatic site-wide free shipping promotions!",
+    "tags": [
+      "stack coupons",
+      "combine discounts",
+      "multiple promo codes",
+      "voucher",
+      "promotions"
+    ]
+  },
+  {
+    "id": 59,
+    "category": "Loyalty Rewards",
+    "question": "Do loyalty reward points expire, and how do I earn referral credits?",
+    "patterns": [
+      "Do reward points expire?",
+      "Refer a friend bonus",
+      "Referral discount code",
+      "How to earn referral credits?",
+      "Points expiration policy"
+    ],
+    "answer": "Reward points remain active for 12 months from the date earned and renew with every purchase. Under our 'Give $20, Get $20' referral program, share your custom link with friends: they get $20 off their first order over $75, and you receive 400 bonus reward points ($20 credit)!",
+    "tags": [
+      "referral",
+      "points expiration",
+      "give 20 get 20",
+      "refer friend",
+      "bonus credit"
+    ]
+  },
+  {
+    "id": 60,
+    "category": "Product & Warranty",
+    "question": "Are your products cruelty-free, vegan, ethically certified, or hypoallergenic?",
+    "patterns": [
+      "Are products cruelty free?",
+      "Vegan certification",
+      "Ethically sourced materials",
+      "Hypoallergenic ingredients",
+      "Animal testing policy"
+    ],
+    "answer": "Yes! We maintain strict ethical standards: 100% of our products are certified cruelty-free by Leaping Bunny and never tested on animals. Vegan formulas and OEKO-TEX certified materials are labeled with clear certification badges on every product specification tab.",
+    "tags": [
+      "cruelty free",
+      "vegan",
+      "ethical",
+      "hypoallergenic",
+      "leaping bunny",
+      "organic",
+      "eco certified"
+    ]
+  }
+]

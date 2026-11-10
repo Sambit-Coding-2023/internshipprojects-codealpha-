@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Auralis AI — Music Generation Studio | Turn Ideas Into Music</title>
+<meta name="description" content="Auralis AI turns your words into original music. Create songs with AI, play, remix, download and share." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>" />
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-analytics.js";
+  import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiTSBpOCsToeQ342LekWI9SCqcV9cexQg",
+    authDomain: "auralis-ai-93b95.firebaseapp.com",
+    projectId: "auralis-ai-93b95",
+    storageBucket: "auralis-ai-93b95.firebasestorage.app",
+    messagingSenderId: "531552488126",
+    appId: "1:531552488126:web:8aba7e10c7d531261a2cef",
+    measurementId: "G-LF16PCLYVL"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const firebaseAuth = getAuth(app);
+  const firebaseGoogleProvider = new GoogleAuthProvider();
+  window.firebaseConfig = firebaseConfig;
+  window.firebaseAuth = firebaseAuth;
+  window.firebaseGoogleProvider = firebaseGoogleProvider;
+</script>
+</head>
+<body>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span></div>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🎧</div>
+      <div>
+        <h1>Auralis <span class="ai">AI</span></h1>
+        <p>Music Generation Studio</p>
+      </div>
+    </div>
+    <nav class="topnav" aria-label="Primary">
+      <button class="pill active" data-view="create">✨ Create</button>
+      <button class="pill" data-view="library">📚 Library <span class="count-badge" id="libCount">0</span></button>
+      <button class="pill" data-view="explore">🌐 Explore</button>
+      <button class="pill" data-view="studio">📊 Studio</button>
+    </nav>
+    <div class="top-actions">
+      <div class="searchbox"><span>🔍</span><input id="topSearch" placeholder="Search tracks…" /></div>
+      <button class="btn ghost sm" id="surpriseBtn" title="Random inspiration">🎲 Inspire me</button>
+      <button class="btn ghost sm" id="neuralBadge" title="Neural engine status">🧠 <span id="neuralState">Fast</span></button>
+      <div id="authArea">
+        <button class="btn primary sm" id="loginBtn">🔐 Login</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="card hero-mini">
+        <p class="eyebrow">Now Trending</p>
+        <h3 id="trendingTitle">Midnight cruise</h3>
+        <p class="muted" id="trendingMeta">Synthwave • 102 BPM • 1.2k plays</p>
+        <div class="wave" id="miniWave"></div>
+        <button class="btn primary w100" id="playTrending">▶ Play trending</button>
+      </div>
+
+      <div class="card">
+        <h3>🎛️ Quick prompts</h3>
+        <div class="chips" id="promptChips">
+          <button class="chip">Funny birthday tune</button>
+          <button class="chip">Epic movie trailer</button>
+          <button class="chip">Chill morning coffee</button>
+          <button class="chip">Retro 80s arcade</button>
+          <button class="chip">Sad piano rain</button>
+          <button class="chip">Dance party groove</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔥 Top genres</h3>
+        <div id="topGenres" class="genre-list"></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <!-- CREATE VIEW -->
+      <section id="view-create" class="view active">
+        <div class="hero">
+          <h2>Describe it. <span class="gradient-text">AI composes it.</span></h2>
+          <p>Type any idea — a mood, a scene, a story — and Auralis AI generates a full song with melody, chords, bass & drums you can play instantly.</p>
+        </div>
+
+        <div class="create-grid">
+          <div class="card composer">
+            <label class="label" for="promptInput">💬 Your music idea</label>
+            <textarea id="promptInput" rows="3" placeholder="e.g. A happy summer road trip song with bright piano and claps…">A happy summer road trip song</textarea>
+            <div class="row">
+              <div style="flex:1">
+                <label class="label">🎵 Genre</label>
+                <div class="chips" id="genreChips"></div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label class="label">Key — Root</label>
+                <select id="rootSelect"><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>A</option><option>B</option></select>
+              </div>
+              <div>
+                <label class="label">Scale</label>
+                <select id="scaleSelect"><option>C Major</option><option>A Minor</option><option>G Major</option><option>D Major</option><option>E Minor</option><option>F Major</option><option>Pentatonic</option></select>
+              </div>
+              <div>
+                <label class="label">Tempo: <output id="bpmOut">100 BPM</output></label>
+                <input type="range" id="bpmRange" min="60" max="140" value="100" />
+              </div>
+              <div>
+                <label class="label">Length: <output id="durOut">30s</output></label>
+                <input type="range" id="durRange" min="12" max="60" step="2" value="30" />
+              </div>
+            </div>
+            <div class="sliders">
+              <div><label>⚡ Energy <output id="energyOut">50%</output></label><input type="range" id="energyRange" min="0" max="100" value="50" /></div>
+              <div><label>☀️ Brightness <output id="brightOut">50%</output></label><input type="range" id="brightRange" min="0" max="100" value="50" /></div>
+              <div><label>🧩 Complexity <output id="complexOut">50%</output></label><input type="range" id="complexRange" min="0" max="100" value="50" /></div>
+            </div>
+            <div class="instruments">
+              <span class="label">Layers</span>
+              <label><input type="checkbox" id="chkMelody" checked /> Melody</label>
+              <label><input type="checkbox" id="chkChords" checked /> Chords</label>
+              <label><input type="checkbox" id="chkBass" checked /> Bass</label>
+              <label><input type="checkbox" id="chkDrums" checked /> Drums</label>
+            </div>
+            <div style="margin-top:14px">
+              <span class="label">🤖 AI Engine</span>
+              <div class="chips" id="engineChips">
+                <button class="chip sel" data-engine="fast">⚡ Fast Engine (Instant)</button>
+                <button class="chip" data-engine="neural">🎧 Neural MusicGen (real AI)</button>
+              </div>
+              <div class="chips" id="backendChips" style="margin-top:6px">
+                <button class="chip sel" data-backend="auto">Auto (Cloud → Local)</button>
+                <button class="chip" data-backend="local">💻 Local GPU/CPU</button>
+                <button class="chip" data-backend="hf-spaces">☁️ HF Spaces (free T4)</button>
+              </div>
+              <p class="hint" id="engineHint">Fast = procedural AI, instant • Neural = MusicGen audio (GPU ~10s, CPU ~45s, Spaces ~12s). Setup: <code>npm run setup:neural</code> + <code>npm run start:neural</code> or deploy <code>backend/space_app.py</code> to HF Spaces.</p>
+            </div>
+            <div class="actions">
+              <button class="btn primary big" id="generateBtn">✨ Generate music</button>
+              <button class="btn ghost" id="shuffleBtn">🎲 Randomize</button>
+            </div>
+            <p class="hint">Powered by <b>Auralis Engine v2</b> • Seeded AI — same prompt always gives the same song</p>
+          </div>
+
+          <div class="card player-card">
+            <div class="player-top">
+              <div class="artwork" id="artwork">🎼</div>
+              <div>
+                <h3 id="nowTitle">Your AI track</h3>
+                <p id="nowMeta" class="muted">Press Generate to create your first song</p>
+                <div class="now-tags" id="nowTags"></div>
+              </div>
+              <div class="player-controls">
+                <button class="icon-btn" id="prevBtn" title="Back 5s">⏮</button>
+                <button class="icon-btn play-big" id="playBtn">▶</button>
+                <button class="icon-btn" id="nextBtn" title="Forward 5s">⏭</button>
+              </div>
+            </div>
+            <canvas id="visualizer" width="720" height="140"></canvas>
+            <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+            <div class="time-row"><span id="curTime">0:00</span><span id="durTime">0:30</span></div>
+            <div class="wave-big" id="waveBig"></div>
+            <div class="player-bottom">
+              <span>🔊</span><input type="range" id="volume" min="0" max="100" value="80" class="vol" />
+              <span class="muted">Tempo</span><input type="range" id="playbackRate" min="50" max="150" value="100" class="vol sm" />
+              <span id="rateOut" class="muted">1.0×</span>
+              <span style="flex:1"></span>
+              <button class="btn ghost sm" id="likeBtn">🤍 0</button>
+              <button class="btn ghost sm" id="downloadBtn">⬇ WAV</button>
+              <button class="btn ghost sm" id="remixBtn">🔀 Remix</button>
+              <button class="btn ghost sm danger" id="deleteBtn">🗑</button>
+            </div>
+
+            <div class="empty" id="emptyState">
+              <div class="empty-emoji">🎧</div>
+              <h4>No track yet</h4>
+              <p>Your generated music will appear here with a live visualizer. Try a prompt above!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>⚡ Recent creations</h3><button class="btn ghost sm" data-goto="library">View all →</button></div>
+          <div class="tracks-grid" id="recentGrid"></div>
+        </div>
+      </section>
+
+      <!-- LIBRARY VIEW -->
+      <section id="view-library" class="view">
+        <h2 class="section-title">📚 My Library</h2>
+        <div class="toolbar">
+          <input id="libSearch" placeholder="Search your tracks…" />
+          <select id="libGenre"><option>All</option></select>
+          <select id="libSort"><option value="recent">Recent</option><option value="popular">Most played</option><option value="liked">Most liked</option></select>
+          <button class="btn ghost sm" id="clearMine">Clear my tracks</button>
+        </div>
+        <div class="tracks-grid" id="libGrid"></div>
+        <p class="muted center" id="libEmpty">No tracks yet. Create your first song in ✨ Create.</p>
+      </section>
+
+      <!-- EXPLORE VIEW -->
+      <section id="view-explore" class="view">
+        <h2 class="section-title">🌐 Community Explore</h2>
+        <p class="muted">Hear what others are creating around the world. Like, remix, and make it yours.</p>
+        <div class="tracks-grid" id="exploreGrid"></div>
+      </section>
+
+      <!-- STUDIO VIEW -->
+      <section id="view-studio" class="view">
+        <h2 class="section-title">📊 Creator Studio</h2>
+        <div class="stats">
+          <div class="stat"><strong id="stTracks">0</strong><span>Tracks</span></div>
+          <div class="stat"><strong id="stPlays">0</strong><span>Total plays</span></div>
+          <div class="stat"><strong id="stLikes">0</strong><span>Total likes</span></div>
+          <div class="stat"><strong id="stMine">0</strong><span>Your songs</span></div>
+          <div class="stat"><strong id="stGenres">0</strong><span>Genres</span></div>
+          <div class="stat"><strong id="stArtists">0</strong><span>Creators</span></div>
+        </div>
+        <div class="card">
+          <h3>How it works</h3>
+          <div class="how"><div>1️⃣ <b>Prompt</b> — describe your vibe</div><div>2️⃣ <b>AI composes</b> — melody, chords, bass, drums</div><div>3️⃣ <b>Play & export</b> — Web Audio playback, WAV download</div><div>4️⃣ <b>Share & remix</b> — community library</div></div>
+        </div>
+        <div class="card">
+          <h3>💡 Pro tips</h3>
+          <ul class="tips">
+            <li>Be specific: “Sad piano rain in Berlin” beats “music”.</li>
+            <li>Try <b>Synthwave + high energy</b> for night-drive vibes.</li>
+            <li>Lower <b>complexity</b> for simple catchy hooks.</li>
+            <li>Use <b>Remix</b> to create endless variations of a winner.</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Bottom player bar (compact) -->
+  <footer class="bottombar">
+    <span>🎵</span><span id="bbTitle" class="bb-title">Auralis AI</span><span class="muted" id="bbMeta">Ready</span>
+    <span style="flex:1"></span>
+    <button id="bbPlay" class="btn primary sm">▶ Play</button>
+    <button id="bbLike" class="btn ghost sm">🤍</button>
+  </footer>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <!-- Auth Modal -->
+  <div class="modal-backdrop" id="authModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-label="Login / Signup">
+      <button class="modal-close" id="authClose">×</button>
+      <div class="auth-orb o1"></div>
+      <div class="auth-orb o2"></div>
+      <div class="auth-head">
+        <div class="auth-logo">🎧</div>
+        <h3 id="authTitle">🎧 Welcome to Auralis</h3>
+        <p class="muted" id="authSub">Login to save your songs to your account.</p>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-tab="login">Login</button>
+        <button class="tab" data-tab="signup">Create account</button>
+      </div>
+      <form id="loginForm">
+        <label class="label">Email</label>
+        <input type="email" id="loginEmail" required placeholder="you@example.com" autocomplete="email" />
+        <label class="label">Password</label>
+        <input type="password" id="loginPassword" required minlength="6" placeholder="••••••••" autocomplete="current-password" />
+        <button class="btn primary w100" type="submit" style="margin-top:14px">🔐 Login</button>
+      </form>
+      <form id="signupForm" hidden>
+        <label class="label">Artist name</label>
+        <input type="text" id="signupName" required minlength="2" maxlength="40" placeholder="e.g. Nova" />
+        <label class="label">Email</label>
+        <input type="email" id="signupEmail" required placeholder="you@example.com" autocomplete="email" />
+        <label class="label">Password</label>
+        <input type="password" id="signupPassword" required minlength="6" placeholder="Min 6 characters" autocomplete="new-password" />
+        <button class="btn primary w100" type="submit" style="margin-top:14px">✨ Create account</button>
+      </form>
+      <div class="divider">or</div>
+      <div id="googleBtnWrap"><div id="googleSignIn"></div>
+      <button class="btn primary w100" id="googleFirebaseBtn" style="margin-top:12px">🔵 Continue with Google</button>
+      <p class="hint center" id="googleHint" style="margin-top:8px">Loading Google sign-in…</p></div>
+      <p class="hint center" style="margin-top:12px">Email/password hashed with bcrypt. Google login verifies ID token server-side.</p>
+    </div>
+  </div>
+
+<script src="/js/music.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASK 2: Chatbot for FAQs | AI Support Assistant</title>
+    <meta name="description" content="Intelligent NLP FAQ Chatbot built with NLTK text preprocessing, TF-IDF vectorization, and Cosine Similarity semantic matching.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=8.0">
+</head>
+<body>
+    <script>try { localStorage.removeItem("task2_sidebar_collapsed"); } catch(e) {}</script>
+    <div class="app-layout" id="appLayout">
+        <!-- Sidebar Backdrop (for Mobile) -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+
+        <!-- Collapsible Sidebar (ChatGPT / Gemini Inspired) -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Sidebar Top Header with 3-dash Hamburger Toggle -->
+            <div class="sidebar-top">
+                <button type="button" class="sidebar-collapse-btn" id="sidebarCollapseBtn" onclick="toggleSidebar()" title="Collapse menu" aria-label="Collapse sidebar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+
+                <div class="sidebar-brand">
+                    <div class="brand-star-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path>
+                        </svg>
+                    </div>
+                    <span class="brand-name">FAQ Assistant</span>
+                </div>
+            </div>
+
+            <!-- New Chat Button -->
+            <div class="sidebar-action-wrap">
+                <button type="button" class="btn-new-chat" onclick="startNewChat()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>New chat</span>
+                </button>
+            </div>
+
+
+            <!-- Recent Chat History List -->
+            <div class="sidebar-history-section">
+                <div class="history-section-header">
+                    <span class="history-title">Recent</span>
+                    <button type="button" class="clear-history-icon-btn" onclick="clearAllHistory()" title="Clear previous history">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- Populated dynamically via JavaScript from localStorage -->
+                </div>
+            </div>
+
+            <!-- Bottom User Profile Pill -->
+            <div class="sidebar-footer">
+                <div class="user-profile-card" id="sidebarUserProfileCard" onclick="handleSidebarProfileClick()" style="cursor: pointer;" title="Account & Profile">
+                    <div class="user-avatar-circle" id="sidebarAvatarCircle">{{ (current_user.full_name or current_user.username)[0]|upper if current_user else '👤' }}</div>
+                    <div class="user-details">
+                        <span class="user-name" id="sidebarUserName">{{ current_user.full_name or current_user.username if current_user else 'Guest User' }}</span>
+                        <span class="user-status-text" id="sidebarUserSub" style="font-size: 0.68rem; color: var(--text-muted); display: block;">{{ (current_user.role|capitalize + ' Member') if current_user else 'Click to Sign In / Sign Up' }}</span>
+                    </div>
+                    <button type="button" class="profile-settings-btn" onclick="event.stopPropagation(); toggleTheme()" title="Switch Light/Dark Theme">
+                        <svg id="profileThemeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Deck -->
+        <main class="main-deck">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <button type="button" class="header-hamburger-btn" onclick="toggleSidebar()" title="Toggle sidebar menu (3 lines)" aria-label="Open sidebar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="navbar-right">
+                    <!-- Authentication Slot (Sign In / User Profile Badge) -->
+                    <div class="auth-navbar-slot" id="authNavbarSlot">
+                        <button type="button" class="header-btn auth-btn" id="navSignInBtn" onclick="navigateToLogin('login')" title="Sign In or Register" style="{{ 'display: none;' if current_user else '' }}">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                <polyline points="10 17 15 12 10 7"></polyline>
+                                <line x1="15" y1="12" x2="3" y2="12"></line>
+                            </svg>
+                            <span class="btn-text">Sign In</span>
+                        </button>
+
+                        <div class="user-profile-badge-btn" id="navUserBadge" style="{{ 'display: inline-flex;' if current_user else 'display: none;' }}" onclick="toggleUserDropdown(event)">
+                            <span class="user-avatar-tag" id="navAvatarTag">{{ (current_user.full_name or current_user.username)[0]|upper if current_user else '👤' }}</span>
+                            <span class="user-name-tag" id="navNameTag">{{ current_user.username if current_user else 'User' }}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </div>
+
+                        <!-- Dropdown Menu -->
+                        <div class="user-dropdown-popover" id="userDropdownPopover" style="display: none;">
+                            <div class="dropdown-user-header">
+                                <div class="dropdown-user-avatar" id="ddAvatar">{{ (current_user.full_name or current_user.username)[0]|upper if current_user else '👤' }}</div>
+                                <div class="dropdown-user-info">
+                                    <div class="dropdown-user-name" id="ddName">{{ current_user.full_name or current_user.username if current_user else 'Demo User' }}</div>
+                                    <div class="dropdown-user-email" id="ddEmail">{{ current_user.email if current_user else 'demo@example.com' }}</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <button type="button" class="dropdown-menu-item" onclick="openProfileModal()">
+                                <span>👤 Account Profile</span>
+                            </button>
+                            <button type="button" class="dropdown-menu-item dd-logout-item" onclick="handleLogout()">
+                                <span>🚪 Sign Out</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="header-btn" onclick="openRubricModal()" title="View Task 2 Checklist">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <span class="btn-text">Task Rubric</span>
+                    </button>
+
+                    <button type="button" class="header-btn" id="themeBtn" onclick="toggleTheme()" title="Switch Light / Dark Theme">
+                        <svg id="themeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <span class="btn-text" id="themeBtnLabel">Theme</span>
+                    </button>
+
+                    <button type="button" class="header-btn" onclick="exportChatSession()" title="Export chat history as JSON">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span class="btn-text">Export</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- WORKSPACE CONTAINER -->
+            <div class="workspace-content">
+                <!-- 1. HERO VIEW (Gemini Style "Where should we start?" when no chat active) -->
+                <div class="gemini-hero-view" id="heroView">
+                    <!-- Dynamic atmospheric aurora glow effects -->
+                    <div class="ambient-blue-glow">
+                        <div class="aurora-orb orb-indigo"></div>
+                        <div class="aurora-orb orb-pink"></div>
+                        <div class="aurora-orb orb-teal"></div>
+                    </div>
+
+                    <div class="hero-content">
+                        <!-- Futuristic AI Badge -->
+                        <div class="hero-badge">
+                            <span class="badge-dot"></span>
+                            <span class="badge-text">Next-Gen NLP FAQ &amp; Multimodal AI</span>
+                        </div>
+
+                        <h1 class="hero-title">Where should we start?</h1>
+
+                        <!-- Central Gemini-style Floating Input Box -->
+                        <div class="hero-input-box">
+                            <form id="heroChatForm" onsubmit="handleHeroSubmit(event)">
+                                <div class="hero-input-wrapper">
+                                    <button type="button" class="hero-plus-btn" onclick="toggleCreationMenu(event, 'hero')" title="Create Images, Slides, PDFs or browse FAQs">
+                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                    </button>
+
+                                    <input 
+                                        type="text" 
+                                        id="heroQueryInput" 
+                                        class="hero-query-input" 
+                                        placeholder="Ask anything or create: 'generate image of...', 'create powerpoint on...', 'make pdf on...' " 
+                                        autocomplete="off"
+                                        required
+                                        oninput="handleInputPredictive(this.value, 'hero')"
+                                    >
+
+                                    <div class="hero-right-actions">
+                                        <button type="button" class="mic-icon-btn" onclick="toggleVoiceRecognition()" title="Voice input (Speech-to-Text)">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                                            </svg>
+                                        </button>
+
+                                        <button type="submit" class="hero-send-btn" title="Send question">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Intelligence Domain Exploration Pills -->
+                        <div class="hero-filter-pills">
+                            <button type="button" class="category-pill pill-omni active" onclick="sendDirectQuery('What can you do?')">
+                                <span>✨ Omni AI</span>
+                            </button>
+                            <button type="button" class="category-pill pill-image" onclick="sendDirectQuery('Generate an image of a futuristic cyberpunk city with neon lights at night')">
+                                <span>🎨 AI Images</span>
+                            </button>
+                            <button type="button" class="category-pill pill-pptx" onclick="sendDirectQuery('Create a powerpoint presentation on Artificial Intelligence Trends and Robotics')">
+                                <span>📊 PowerPoint (.pptx)</span>
+                            </button>
+                            <button type="button" class="category-pill pill-pdf" onclick="sendDirectQuery('Generate a PDF executive report on Global Renewable Energy Market')">
+                                <span>📄 PDF Reports (.pdf)</span>
+                            </button>
+                            <button type="button" class="category-pill pill-code" onclick="sendDirectQuery('Write Python code to reverse a list')">
+                                <span>💻 Code &amp; Tech</span>
+                            </button>
+                            <button type="button" class="category-pill pill-orders" onclick="sendDirectQuery('Where is my package right now?')">
+                                <span>📦 Orders &amp; Shipping</span>
+                            </button>
+                            <button type="button" class="category-pill pill-faqs" onclick="openFaqKnowledgebaseModal()">
+                                <span>📚 Store FAQs ({{ faqs|length }}+ Topics)</span>
+                            </button>
+                        </div>
+
+                        <!-- Gemini & ChatGPT Style Universal Suggestion Cards -->
+                        <div class="hero-suggestions-grid">
+                            <div class="hero-sugg-card card-image" onclick="sendDirectQuery('Generate an image of a futuristic cyberpunk city with flying cars')">
+                                <div class="sugg-icon-wrap icon-image">🎨</div>
+                                <div class="sugg-text">
+                                    <div class="sugg-title">Generate AI Image</div>
+                                    <div class="sugg-sub">Photorealistic 1024×768 artwork with instant HD download</div>
+                                </div>
+                                <div class="sugg-arrow">↗</div>
+                            </div>
+
+                            <div class="hero-sugg-card card-pptx" onclick="sendDirectQuery('Create a powerpoint presentation on Cloud Computing Architecture')">
+                                <div class="sugg-icon-wrap icon-pptx">📊</div>
+                                <div class="sugg-text">
+                                    <div class="sugg-title">Create PowerPoint Deck</div>
+                                    <div class="sugg-sub">Interactive 16:9 slide carousel + direct .pptx file download</div>
+                                </div>
+                                <div class="sugg-arrow">↗</div>
+                            </div>
+
+                            <div class="hero-sugg-card card-pdf" onclick="sendDirectQuery('Generate a PDF executive report on Renewable Energy Market Analysis')">
+                                <div class="sugg-icon-wrap icon-pdf">📄</div>
+                                <div class="sugg-text">
+                                    <div class="sugg-title">Create PDF Document</div>
+                                    <div class="sugg-sub">Formatted executive report with tables &amp; printable .pdf download</div>
+                                </div>
+                                <div class="sugg-arrow">↗</div>
+                            </div>
+
+                            <div class="hero-sugg-card card-code" onclick="sendDirectQuery('Write Python code to reverse a list')">
+                                <div class="sugg-icon-wrap icon-code">💻</div>
+                                <div class="sugg-text">
+                                    <div class="sugg-title">Write Python code</div>
+                                    <div class="sugg-sub">Reverse lists using slicing, in-place, and iterators</div>
+                                </div>
+                                <div class="sugg-arrow">↗</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ACTIVE CHAT VIEW (Shows when conversation is flowing) -->
+                <div class="active-chat-view" id="chatView" style="display: none;">
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Populated dynamically as messages are exchanged -->
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <span class="typing-text">NLP engine computing cosine similarity...</span>
+                    </div>
+
+                    <!-- Floating Bottom Input Bar for Active Chat -->
+                    <div class="chat-bottom-bar-wrap">
+                        <form id="chatForm" onsubmit="handleChatSubmit(event)">
+                            <div class="floating-input-pill">
+                                <button type="button" class="hero-plus-btn" onclick="toggleCreationMenu(event, 'chat')" title="Create Images, Slides, PDFs or browse FAQs">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+
+                                <input 
+                                    type="text" 
+                                    id="queryInput" 
+                                    placeholder="Ask anything or create: 'generate image of...', 'create powerpoint on...', 'make pdf on...' " 
+                                    autocomplete="off"
+                                    required
+                                    oninput="handleInputPredictive(this.value, 'bottom')"
+                                >
+
+                                <button 
+                                    type="button" 
+                                    id="micBtn" 
+                                    class="mic-icon-btn" 
+                                    onclick="toggleVoiceRecognition()" 
+                                    title="Voice input (Speech-to-Text)"
+                                >
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                        <line x1="12" y1="19" x2="12" y2="23"></line>
+                                        <line x1="8" y1="23" x2="16" y2="23"></line>
+                                    </svg>
+                                </button>
+
+                                <button type="submit" id="sendBtn" class="hero-send-btn" title="Send question">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Predictive Suggestions Overlay -->
+            <div class="predictive-dropdown" id="predictiveHud" style="display: none;">
+                <div class="predictive-header">
+                    <span>SUGGESTED FAQ MATCHES</span>
+                    <span class="esc-hint">ESC to close</span>
+                </div>
+                <div class="predictive-items" id="predictiveList"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL 1: TASK 2 RUBRIC & CHECKLIST MODAL -->
+    <div class="modal-backdrop" id="rubricModal" onclick="closeRubricModal(event)" style="display: none;">
+        <div class="modal-card rubric-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-badge">TASK 2 GUIDELINES &amp; ARCHITECTURE</span>
+                    <h3 class="modal-title">Task 2: Chatbot for FAQs - Evaluation Rubric</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeRubricModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="rubric-checklist">
+                    <div class="rubric-item completed">
+                        <div class="item-icon">✅</div>
+                        <div class="item-content">
+                            <h4>1. Collect FAQs related to a topic or product</h4>
+                            <p>Created an e-commerce customer support knowledgebase with 12 structured FAQs across Orders, Shipping, Returns, Payments, and Account Security.</p>
+                            <span class="code-ref">File: <code>data/faqs.json</code></span>
+                        </div>
+                    </div>
+
+                    <div class="rubric-item completed">
+                        <div class="item-icon">✅</div>
+                        <div class="item-content">
+                            <h4>2. Preprocess text using NLP libraries (NLTK)</h4>
+                            <p>Contraction expansion, punctuation stripping, tokenization (<code>word_tokenize</code>), stopword removal, and dual-pass POS lemmatization (<code>WordNetLemmatizer</code>).</p>
+                            <span class="code-ref">File: <code>src/nlp_preprocessor.py</code></span>
+                        </div>
+                    </div>
+
+                    <div class="rubric-item completed">
+                        <div class="item-icon">✅</div>
+                        <div class="item-content">
+                            <h4>3. Match user questions with Cosine Similarity or Intent Matching</h4>
+                            <p>Vectorizes query and corpus with <strong>TF-IDF Vectorizer</strong> (1-2 n-grams) and calculates <strong>Cosine Similarity</strong> matrix scores with content-token gating.</p>
+                            <span class="code-ref">File: <code>src/matcher.py</code> &amp; <code>src/bot_engine.py</code></span>
+                        </div>
+                    </div>
+
+                    <div class="rubric-item completed">
+                        <div class="item-icon">✅</div>
+                        <div class="item-content">
+                            <h4>4. Display the best matching answer as a chatbot response</h4>
+                            <p>Renders top-ranked answer with match confidence badge (e.g. <code>98% Match</code>), category tag, canonical question, and related suggestions.</p>
+                            <span class="code-ref">Files: <code>src/bot_engine.py</code>, <code>static/js/app.js</code></span>
+                        </div>
+                    </div>
+
+                    <div class="rubric-item completed">
+                        <div class="item-icon">✅</div>
+                        <div class="item-content">
+                            <h4>5. (Optional) Simple Chat UI for user interaction</h4>
+                            <p>Modern Gemini-inspired web interface with collapsible sidebar (3-dash icon), recent chat history, dark/light theme, and voice speech-to-text.</p>
+                            <span class="code-ref">Files: <code>templates/index.html</code>, <code>static/css/style.css</code></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="benchmark-summary-box">
+                    <div class="bench-stat">
+                        <span class="bench-num">100%</span>
+                        <span class="bench-label">Benchmark Accuracy (24/24)</span>
+                    </div>
+                    <div class="bench-stat">
+                        <span class="bench-num">0.98</span>
+                        <span class="bench-label">Average Confidence</span>
+                    </div>
+                    <div class="bench-stat">
+                        <span class="bench-num">&lt; 3 ms</span>
+                        <span class="bench-label">Average Match Latency</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" onclick="closeRubricModal()">Close &amp; Test Chatbot</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: FAQ KNOWLEDGEBASE BROWSER MODAL -->
+    <div class="modal-backdrop" id="faqModal" onclick="closeFaqKnowledgebaseModal(event)" style="display: none;">
+        <div class="modal-card faq-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-badge">FAQ DIRECTORY</span>
+                    <h3 class="modal-title">Browse All {{ faqs | length }} Product &amp; Support FAQs</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeFaqKnowledgebaseModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="faq-modal-search">
+                    <input 
+                        type="text" 
+                        id="faqModalSearchInput" 
+                        class="search-input" 
+                        placeholder="Search FAQs by question or keyword..." 
+                        oninput="filterFaqModalList(this.value)"
+                    >
+                </div>
+
+                <div class="faq-modal-list" id="faqModalList">
+                    {% for cat in categories %}
+                    <div class="faq-modal-category-group" data-cat="{{ cat | lower }}">
+                        <div class="category-header-title">● {{ cat }}</div>
+                        <div class="faq-modal-items">
+                            {% for f in faqs %}
+                                {% if f.category == cat %}
+                                <div class="faq-modal-card-item" onclick="selectFaqItem('{{ f.question | e }}')">
+                                    <div class="faq-item-q">
+                                        <span class="q-icon">?</span>
+                                        <span class="q-text">{{ f.question }}</span>
+                                    </div>
+                                    <div class="faq-item-a">{{ f.answer }}</div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeFaqKnowledgebaseModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: NLP & COSINE EXPLAINABILITY TELEMETRY MODAL -->
+    <div class="modal-backdrop" id="telemetryModal" onclick="closeTelemetryModal(event)" style="display: none;">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-badge">NLP ENGINE EXPLAINABILITY</span>
+                    <h3 class="modal-title">Text Preprocessing &amp; Cosine Similarity Calculation</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="hideTelemetryModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="telemetryModalBody">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="hideTelemetryModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: GOOGLE GEMINI GENERATIVE AI GATEWAY MODAL -->
+    <div class="modal-backdrop" id="geminiModal" onclick="closeGeminiKeyModal(event)" style="display: none;">
+        <div class="modal-card gemini-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-badge gemini-badge">GOOGLE GEMINI 1.5/2.0 GATEWAY</span>
+                    <h3 class="modal-title">✨ Ultra AI Intelligence Mode</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeGeminiKeyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-instruction">
+                    Experience state-of-the-art general intelligence just like <strong>ChatGPT and Gemini</strong>. 
+                    Ask complex coding questions, write poems/essays, solve multi-step problems, explore science, or ask customer support.
+                </p>
+
+                <div class="gemini-status-card" id="geminiStatusCard">
+                    <div class="status-indicator-dot active"></div>
+                    <div class="status-info">
+                        <strong>Active AI Architecture:</strong> 
+                        <span id="activeModelLabel">Built-in Neural AI &amp; Web Knowledge Engine</span>
+                    </div>
+                </div>
+
+                <div class="gemini-input-group">
+                    <label for="geminiApiKeyInput"><strong>Google Gemini API Key (Optional)</strong></label>
+                    <div class="key-input-row">
+                        <input 
+                            type="password" 
+                            id="geminiApiKeyInput" 
+                            class="gemini-key-field" 
+                            placeholder="AIzaSy... (Paste key here for direct cloud Gemini API)" 
+                            autocomplete="off"
+                        >
+                        <button type="button" class="key-eye-btn" onclick="toggleKeyVisibility()" title="Show/Hide Key">👁️</button>
+                    </div>
+                    <p class="gemini-hint">
+                        💡 Get a 100% free API key with zero billing required at 
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio (aistudio.google.com)</a>.
+                        Your key is saved locally in your browser and used securely.
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer gemini-modal-footer">
+                <button type="button" class="btn-primary" onclick="saveGeminiApiKey()">Save &amp; Activate Gemini</button>
+                <button type="button" class="btn-secondary" onclick="clearGeminiApiKey()">Clear Key</button>
+                <button type="button" class="btn-secondary" onclick="closeGeminiKeyModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Quick Creation Studio Popover -->
+    <div class="creation-menu-popover" id="creationMenuPopover" style="display: none;">
+        <div class="creation-menu-header">Quick Creation Studio</div>
+        <div class="creation-menu-items">
+            <button type="button" class="creation-menu-item" onclick="triggerCreationMode('image')">
+                <span class="creation-item-icon">🎨</span>
+                <div class="creation-item-text">
+                    <span class="creation-item-title">Generate AI Image</span>
+                    <span class="creation-item-desc">High-resolution photoreal art &amp; digital illustrations</span>
+                </div>
+            </button>
+            <button type="button" class="creation-menu-item" onclick="triggerCreationMode('pptx')">
+                <span class="creation-item-icon">📊</span>
+                <div class="creation-item-text">
+                    <span class="creation-item-title">Make PowerPoint Deck</span>
+                    <span class="creation-item-desc">Interactive slides + 16:9 widescreen (.pptx) download</span>
+                </div>
+            </button>
+            <button type="button" class="creation-menu-item" onclick="triggerCreationMode('pdf')">
+                <span class="creation-item-icon">📄</span>
+                <div class="creation-item-text">
+                    <span class="creation-item-title">Generate PDF Document</span>
+                    <span class="creation-item-desc">Executive report, proposal, or resume (.pdf)</span>
+                </div>
+            </button>
+            <div class="creation-menu-divider"></div>
+            <button type="button" class="creation-menu-item" onclick="openFaqKnowledgebaseModal()">
+                <span class="creation-item-icon">📚</span>
+                <div class="creation-item-text">
+                    <span class="creation-item-title">Browse Store FAQs</span>
+                    <span class="creation-item-desc">32+ E-commerce topics, policies, &amp; guides</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal for Fullscreen Artwork Zoom -->
+    <div class="modal-backdrop" id="imageLightboxModal" style="display: none;" onclick="closeImageLightbox(event)">
+        <div class="image-lightbox-content" onclick="event.stopPropagation()">
+            <button type="button" class="lightbox-close-btn" onclick="closeImageLightbox()">&times;</button>
+            <img src="" alt="" id="lightboxImg" class="lightbox-main-img">
+            <div class="lightbox-bar">
+                <span id="lightboxCaption" class="lightbox-caption"></span>
+                <a href="" id="lightboxDownloadBtn" target="_blank" download="artwork.jpg" class="lightbox-download-btn">Download Full HD</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal (Sign In / Create Account) -->
+    <div class="modal-backdrop" id="authModal" style="display: none;" onclick="closeAuthModal(event)">
+        <div class="auth-modal-card" onclick="event.stopPropagation()">
+            <!-- Tab Switcher -->
+            <div class="auth-tabs-row">
+                <button type="button" class="auth-tab-btn active" id="tabSignInBtn" onclick="switchAuthTab('login')">
+                    Sign In
+                </button>
+                <button type="button" class="auth-tab-btn" id="tabSignUpBtn" onclick="switchAuthTab('register')">
+                    Create Account
+                </button>
+                <button type="button" class="modal-close-btn" onclick="closeAuthModal()" style="margin-right: 12px;">&times;</button>
+            </div>
+
+            <!-- Alert Message Box -->
+            <div style="padding: 14px 24px 0 24px;">
+                <div class="auth-alert-box" id="authAlertBox"></div>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="loginForm" class="auth-form-body" onsubmit="handleLoginSubmit(event)">
+                <div class="auth-form-group">
+                    <label for="loginIdentifier">Username or Email</label>
+                    <div class="auth-input-wrapper">
+                        <input type="text" id="loginIdentifier" class="auth-input-field" placeholder="e.g. demo_user or user@example.com" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="auth-input-wrapper">
+                        <input type="password" id="loginPassword" class="auth-input-field" placeholder="Enter your password" required autocomplete="current-password">
+                        <button type="button" class="auth-eye-btn" onclick="toggleAuthPasswordVisibility('loginPassword')" title="Show / Hide Password">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="loginSubmitBtn">
+                    <span>Sign In</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+
+                <div style="text-align: center; margin: 4px 0; color: var(--text-muted); font-size: 0.76rem;">— OR —</div>
+
+                <button type="button" class="auth-demo-btn" onclick="quickFillDemoLogin()">
+                    <span>🚀 Quick Demo Login (demo_user)</span>
+                </button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="registerForm" class="auth-form-body" style="display: none;" onsubmit="handleRegisterSubmit(event)">
+                <div class="auth-form-group">
+                    <label for="regUsername">Username</label>
+                    <div class="auth-input-wrapper">
+                        <input type="text" id="regUsername" class="auth-input-field" placeholder="Choose a username (3+ chars)" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="regFullName">Full Name (Optional)</label>
+                    <div class="auth-input-wrapper">
+                        <input type="text" id="regFullName" class="auth-input-field" placeholder="e.g. Alex Smith" autocomplete="name">
+                    </div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="regEmail">Email Address</label>
+                    <div class="auth-input-wrapper">
+                        <input type="email" id="regEmail" class="auth-input-field" placeholder="name@domain.com" required autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="regPassword">Password (6+ chars)</label>
+                    <div class="auth-input-wrapper">
+                        <input type="password" id="regPassword" class="auth-input-field" placeholder="Create a secure password" minlength="6" required autocomplete="new-password">
+                        <button type="button" class="auth-eye-btn" onclick="toggleAuthPasswordVisibility('regPassword')" title="Show / Hide Password">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-submit-btn" id="registerSubmitBtn">
+                    <span>Create Free Account</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="modal-backdrop" id="profileModal" style="display: none;" onclick="closeProfileModal(event)">
+        <div class="modal-card" style="max-width: 480px;" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="modal-icon">👤</span>
+                    <div>
+                        <h2 class="modal-title">User Account Profile</h2>
+                        <span class="modal-subtitle">Manage your session &amp; account details</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; align-items: center; gap: 16px; padding: 14px; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #9333ea); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #fff;" id="profileModalAvatar">
+                        👤
+                    </div>
+                    <div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-main);" id="profileModalFullName">User</div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted);" id="profileModalUsername">@username</div>
+                    </div>
+                </div>
+
+                <div class="profile-info-grid">
+                    <div class="profile-info-box">
+                        <div class="profile-info-label">Email Address</div>
+                        <div class="profile-info-val" id="profileModalEmail">user@example.com</div>
+                    </div>
+                    <div class="profile-info-box">
+                        <div class="profile-info-label">Role / Tier</div>
+                        <div class="profile-info-val" id="profileModalRole">Verified Member</div>
+                    </div>
+                    <div class="profile-info-box">
+                        <div class="profile-info-label">Member Since</div>
+                        <div class="profile-info-val" id="profileModalCreated">Today</div>
+                    </div>
+                    <div class="profile-info-box">
+                        <div class="profile-info-label">Account Status</div>
+                        <div class="profile-info-val" style="color: var(--accent-green);">Active ●</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" style="background: #ef4444;" onclick="handleLogout()">Sign Out</button>
+                <button type="button" class="btn-secondary" onclick="closeProfileModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts (both app.js and chat.js support) -->
+    <script src="/static/js/app.js?v=6.3"></script>
+</body>
+</html>

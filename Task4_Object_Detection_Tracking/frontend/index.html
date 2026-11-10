@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrafficGuard AI — Traffic Violation Detection</title>
+<meta name="description" content="Upload traffic video, detect overspeeding, red-light jumping, wrong-way driving and helmet violations with AI." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="bg-orbs" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span></div>
+
+<!-- ======================= AUTH ======================= -->
+<section id="auth-view" class="auth-wrap">
+  <div class="auth-card glass">
+    <div class="brand">
+      <div class="brand-mark">🚦</div>
+      <div>
+        <h1 class="brand-title">Traffic<span>Guard</span> AI</h1>
+        <p class="brand-sub">AI Traffic Violation Detection &amp; Tracking</p>
+      </div>
+    </div>
+    <p class="auth-lead">Upload real traffic footage. YOLOv8 + ByteTrack detect every vehicle,
+      track it through the clip, estimate its speed and count overspeeding, red-light jumping,
+      wrong-way driving and no-helmet violations — with annotated video and evidence frames.</p>
+    <form id="auth-form" novalidate>
+      <div class="tabs">
+        <button type="button" id="tab-login" class="tab active">Sign in</button>
+        <button type="button" id="tab-register" class="tab">Create account</button>
+      </div>
+      <label class="field" id="name-field" style="display:none">
+        <span>Full name</span>
+        <input id="auth-name" type="text" placeholder="e.g. Priya Sharma" autocomplete="name" />
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input id="auth-email" type="email" placeholder="you@example.com" autocomplete="email" required />
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+      </label>
+      <p class="auth-error" id="auth-error" hidden></p>
+      <button class="btn btn-primary btn-block" id="auth-submit" type="submit">Sign in</button>
+      <p class="auth-foot">Powered by YOLOv8 · ByteTrack · OpenCV · Flask</p>
+    </form>
+  </div>
+</section>
+
+<!-- ======================= APP SHELL ======================= -->
+<section id="app-view" hidden>
+  <aside class="sidebar glass">
+    <div class="brand small">
+      <div class="brand-mark">🚦</div>
+      <div>
+        <h1 class="brand-title">Traffic<span>Guard</span> AI</h1>
+        <p class="brand-sub">Violation Detection</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" data-view="dashboard">▦ <span>Dashboard</span></button>
+      <button class="nav-btn" data-view="analyze">🎬 <span>Analyze video</span></button>
+      <button class="nav-btn" data-view="history">🕘 <span>My history</span></button>
+      <button class="nav-btn" data-view="guide">📘 <span>How it works</span></button>
+    </nav>
+    <div class="user-card">
+      <div class="avatar" id="user-initials">TG</div>
+      <div class="user-meta">
+        <strong id="user-name">—</strong>
+        <small id="user-email">—</small>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="logout-btn" title="Sign out">⎋</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- ============ DASHBOARD ============ -->
+    <section class="view" id="view-dashboard">
+      <header class="page-head">
+        <div>
+          <h2>Dashboard</h2>
+          <p>Your detection activity at a glance.</p>
+        </div>
+        <button class="btn btn-primary" id="dash-goto-analyze">🎬 Analyze a video</button>
+      </header>
+      <div class="kpi-grid">
+        <div class="kpi glass"><span class="kpi-ico">🎬</span><div><strong id="kpi-jobs">0</strong><small>Analyses run</small></div></div>
+        <div class="kpi glass"><span class="kpi-ico">🚗</span><div><strong id="kpi-vehicles">0</strong><small>Vehicles tracked</small></div></div>
+        <div class="kpi glass danger"><span class="kpi-ico">⚠️</span><div><strong id="kpi-violating">0</strong><small>Vehicles breaking rules</small></div></div>
+        <div class="kpi glass danger"><span class="kpi-ico">📋</span><div><strong id="kpi-violations">0</strong><small>Violation events</small></div></div>
+        <div class="kpi glass"><span class="kpi-ico">✅</span><div><strong id="kpi-done">0</strong><small>Completed</small></div></div>
+      </div>
+      <div class="chart-grid">
+        <div class="card glass"><h3>Violating vehicles by rule</h3><div class="chart-box"><canvas id="chart-violations"></canvas></div></div>
+        <div class="card glass"><h3>Vehicles by class</h3><div class="chart-box"><canvas id="chart-classes"></canvas></div></div>
+      </div>
+      <div class="card glass">
+        <h3>Recent analyses</h3>
+        <div id="recent-list" class="recent-list"><p class="muted">No analyses yet. Head to <b>Analyze video</b> to run your first detection.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ ANALYZE ============ -->
+    <section class="view" id="view-analyze" hidden>
+      <header class="page-head">
+        <div>
+          <h2>Analyze traffic video</h2>
+          <p>Upload a clip, calibrate the scene, let the AI count violations.</p>
+        </div>
+        <button class="btn btn-ghost" id="demo-btn">▶ Get built-in demo clip</button>
+      </header>
+
+      <div class="analyze-grid">
+        <!-- left: source + canvas -->
+        <div class="card glass">
+          <h3>1 · Video source</h3>
+          <div id="dropzone" class="dropzone" tabindex="0">
+            <div class="dz-icon">📤</div>
+            <p><strong>Drag &amp; drop a traffic video</strong> or click to browse</p>
+            <small>MP4 · AVI · MOV · MKV · WEBM — up to 200 MB</small>
+            <input type="file" id="file-input" accept="video/*,.mkv,.avi,.mov" hidden />
+          </div>
+          <p class="muted small-line" id="source-info">No video selected. Real footage gives the best results — the demo clip also works out of the box.</p>
+
+          <div class="zone-tools" id="zone-tools" hidden>
+            <button class="btn btn-small active" id="tool-stop">✏️ Draw stop line</button>
+            <button class="btn btn-small" id="tool-dir">🧭 Allowed direction</button>
+            <button class="btn btn-small" id="tool-clear">🗑 Clear</button>
+          </div>
+          <div class="stage" id="stage" hidden>
+            <video id="source-video" playsinline muted></video>
+            <canvas id="zone-canvas"></canvas>
+          </div>
+          <p class="muted small-line" id="zone-hint" hidden>Automatic mode: the AI placed a stop line under the detected traffic light and learned the flow direction on its own. (Switch to Manual zones to draw your own.)</p>
+        </div>
+
+        <!-- right: config + run -->
+        <div class="card glass">
+          <h3>2 · Detection settings</h3>
+          <div class="field">
+            <span>Detection mode</span>
+            <div class="mode-row">
+              <button class="btn btn-small active" id="mode-auto">🤖 Fully automatic</button>
+              <button class="btn btn-small" id="mode-manual">✏️ Manual zones</button>
+            </div>
+            <small class="hint" id="mode-note">AI auto-calibrates speed scale from vehicle sizes, reads the traffic-light colour from the video, and learns allowed flow direction from where vehicles actually move. No drawing needed.</small>
+          </div>
+          <div class="preset-row">
+            <button class="btn btn-small" id="preset-defaults">City defaults</button>
+            <button class="btn btn-small" id="preset-demo">Demo clip preset</button>
+            <button class="btn btn-small" id="preset-highway">Highway preset</button>
+          </div>
+
+          <label class="field">
+            <span>Speed limit — <output id="o-limit">50 km/h</output></span>
+            <input type="range" id="cfg-limit" min="10" max="120" value="50" />
+          </label>
+          <label class="field" id="ppm-field">
+            <span>Pixels per metre (camera calibration) — <output id="o-ppm">1.0</output></span>
+            <input type="range" id="cfg-ppm" min="0.2" max="20" step="0.1" value="1.0" />
+            <small class="hint">Manual mode only. In automatic mode the scale is calibrated from detected vehicle sizes (avg. car ≈ 1.8 m wide).</small>
+          </label>
+          <label class="field">
+            <span>Detection confidence — <output id="o-conf">0.40</output></span>
+            <input type="range" id="cfg-conf" min="0.15" max="0.9" step="0.05" value="0.4" />
+          </label>
+
+          <div class="field">
+            <span>Violation rules</span>
+            <div class="toggle-grid">
+              <label class="toggle"><input type="checkbox" id="cfg-overspeed" checked /><span></span> Overspeeding</label>
+              <label class="toggle"><input type="checkbox" id="cfg-redlight" checked /><span></span> Red-light jumping</label>
+              <label class="toggle"><input type="checkbox" id="cfg-wrongway" checked /><span></span> Wrong-way driving</label>
+              <label class="toggle"><input type="checkbox" id="cfg-helmet" checked /><span></span> No helmet (riders)</label>
+            </div>
+          </div>
+
+          <div class="field" id="cycle-field" hidden>
+            <span>Traffic-light cycle <small>(manual mode, for red-light rule)</small></span>
+            <div class="cycle-row">
+              <label>Red <input type="number" id="cfg-red-s" value="7" min="2" max="120" /> s</label>
+              <label>Green <input type="number" id="cfg-green-s" value="7" min="2" max="120" /> s</label>
+              <label>Starts <select id="cfg-initial"><option value="red">Red</option><option value="green">Green</option></select></label>
+            </div>
+            <small class="hint">Leave the stop line empty and the red-light rule stays off. The light clock starts at the first frame of the video.</small>
+          </div>
+
+          <button class="btn btn-primary btn-lg btn-block" id="run-btn" disabled>🚦 Run AI detection</button>
+          <div class="progress-wrap" id="progress-wrap" hidden>
+            <div class="progress-bar"><span id="progress-fill"></span></div>
+            <p class="muted small-line" id="progress-text">Queued…</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- results -->
+      <div id="results" hidden>
+        <header class="page-head"><div><h2>Analysis results</h2><p id="results-meta">—</p></div>
+          <div class="btn-row">
+            <button class="btn btn-ghost btn-small" id="export-csv">⬇ CSV</button>
+            <button class="btn btn-ghost btn-small" id="export-pdf">⬇ PDF report</button>
+          </div>
+        </header>
+        <div class="kpi-grid">
+          <div class="kpi glass danger"><span class="kpi-ico">⚠️</span><div><strong id="r-violating">0</strong><small>Vehicles breaking rules</small></div></div>
+          <div class="kpi glass"><span class="kpi-ico">🚗</span><div><strong id="r-vehicles">0</strong><small>Vehicles tracked</small></div></div>
+          <div class="kpi glass"><span class="kpi-ico">📋</span><div><strong id="r-violations">0</strong><small>Violation events</small></div></div>
+          <div class="kpi glass"><span class="kpi-ico">✅</span><div><strong id="r-compliant">0</strong><small>Compliant vehicles</small></div></div>
+        </div>
+        <div class="results-grid">
+          <div class="card glass">
+            <h3>Annotated video</h3>
+            <video id="output-video" class="output-video" controls playsinline></video>
+          </div>
+          <div class="card glass">
+            <h3>Violating vehicles by rule</h3>
+            <div class="chart-box"><canvas id="chart-result-types"></canvas></div>
+            <h3 style="margin-top:20px">Vehicles by class</h3>
+            <div class="chart-box"><canvas id="chart-result-classes"></canvas></div>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Violation log <small id="viol-count" class="muted"></small></h3>
+          <div class="table-wrap">
+            <table class="viol-table">
+              <thead><tr><th>#</th><th>Type</th><th>Vehicle</th><th>Track</th><th>Time</th><th>Speed</th><th>Evidence</th><th>Detail</th></tr></thead>
+              <tbody id="viol-body"><tr><td colspan="8" class="muted">No violations detected 🎉</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card glass">
+          <h3>Evidence frames</h3>
+          <div id="evidence-grid" class="evidence-grid"><p class="muted">Evidence stills will appear here.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HISTORY ============ -->
+    <section class="view" id="view-history" hidden>
+      <header class="page-head">
+        <div><h2>My history</h2><p>Every analysis you have run, newest first.</p></div>
+        <button class="btn btn-ghost" id="refresh-history">↻ Refresh</button>
+      </header>
+      <div class="card glass">
+        <div class="table-wrap">
+          <table class="viol-table">
+            <thead><tr><th>Video</th><th>Status</th><th>Vehicles</th><th>Breaking rules</th><th>Violation events</th><th>When</th><th></th></tr></thead>
+            <tbody id="history-body"><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GUIDE ============ -->
+    <section class="view" id="view-guide" hidden>
+      <header class="page-head"><div><h2>How it works</h2><p>The pipeline behind every count.</p></div></header>
+      <div class="guide-grid">
+        <div class="card glass"><h3>🔍 1 · Detection</h3><p>YOLOv8 (COCO-pretrained) scans every frame for cars, bikes, buses, trucks, bicycles and riders.</p></div>
+        <div class="card glass"><h3>🧭 2 · Tracking</h3><p>ByteTrack links detections across frames into stable per-vehicle tracks with IDs and trajectories.</p></div>
+        <div class="card glass"><h3>📏 3 · Speed</h3><p>Centroid motion × your pixels-per-metre calibration × fps = km/h per vehicle, smoothed over time.</p></div>
+        <div class="card glass"><h3>🤖 4 · Fully automatic rules</h3><p>Speed scale auto-calibrated from vehicle sizes (avg. car ≈ 1.8 m) · traffic-light colour read directly from the video, stop line placed at the light · allowed flow direction learned from where most vehicles move · rider without a detectable helmet. A manual-zone mode remains available for camera setups where auto fails.</p></div>
+        <div class="card glass"><h3>🎬 5 · Output</h3><p>Annotated video with boxes, speeds and badges, a timestamped violation log, evidence stills, CSV + PDF exports.</p></div>
+        <div class="card glass warn"><h3>⚠️ Honest limits</h3><p>Speed needs correct pixels-per-metre calibration. The traffic-light clock is user-defined (the app cannot see the real light unless you draw it in the video). Helmet detection is a colour heuristic and is indicative, not certified.</p></div>
+      </div>
+    </section>
+  </main>
+</section>
+
+<!-- evidence modal -->
+<div id="modal" class="modal" hidden>
+  <div class="modal-backdrop" id="modal-backdrop"></div>
+  <div class="modal-card glass">
+    <button class="btn btn-ghost btn-sm modal-close" id="modal-close">✕</button>
+    <img id="modal-img" alt="Evidence frame" />
+    <p id="modal-caption" class="muted"></p>
+  </div>
+</div>
+
+<div id="toasts" class="toasts"></div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
